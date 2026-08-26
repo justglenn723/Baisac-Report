@@ -84,18 +84,29 @@
 
   /* ============ STAGE (PowerPoint-style 16:9 slide, centered on a dark desk) ============ */
   .stage{
-    height:100vh; width:100vw; display:flex; align-items:center; justify-content:center;
+    height:100vh; height:100dvh; width:100vw; display:flex; align-items:center; justify-content:center;
     position:relative; z-index:1; box-sizing:border-box;
   }
   .app{
     position:relative; z-index:1; flex:0 0 auto;
     width:min(94vw, calc(94vh * 16 / 9));
     height:min(94vh, calc(94vw * 9 / 16));
+    width:min(94vw, calc(94dvh * 16 / 9));
+    height:min(94dvh, calc(94vw * 9 / 16));
     display:flex; flex-direction:column;
     background:var(--bg);
     border-radius:10px; overflow:hidden;
     box-shadow:0 40px 120px rgba(0,0,0,.55), 0 0 0 1px var(--line);
     container-type:inline-size;
+  }
+  /* On small/portrait screens, drop the strict 16:9 letterboxing and use most of the screen instead */
+  @media (max-width:700px), (max-height:480px){
+    .stage{ padding:10px; }
+    .app{
+      width:100%; height:100%;
+      max-width:100vw; max-height:100vh; max-height:100dvh;
+      border-radius:14px;
+    }
   }
 
   /* ============ TOPBAR ============ */
@@ -118,10 +129,11 @@
     height:100%; flex:1 1 0%; min-width:0;
     display:flex; align-items:flex-start; justify-content:center;
     padding:0 clamp(20px,6cqw,80px);
-    overflow-y:auto;
+    overflow:hidden;
   }
-  .slide-inner{ width:100%; max-width:980px; margin:0 auto; padding:34px 0 40px; }
+  .slide-inner{ width:100%; max-width:980px; margin:0 auto; padding:34px 0 40px; transform-origin:top center; }
   .s-title{ min-height:100%; display:flex; flex-direction:column; justify-content:center; }
+  @media (prefers-reduced-motion:reduce){ .slide-inner{ transition:none; } }
 
   .eyebrow{
     font-family:var(--font-mono); font-size:.72rem; letter-spacing:.2em; text-transform:uppercase;
@@ -191,7 +203,7 @@
 
   /* ============ SLIDE 2 — COMPARE SLIDER ============ */
   .compare{
-    position:relative; margin-top:30px; height:min(260px,38cqw); border-radius:18px; overflow:hidden;
+    position:relative; margin-top:20px; height:min(190px,30cqw); border-radius:18px; overflow:hidden;
     border:1px solid var(--line); box-shadow:var(--shadow);
   }
   .compare-pane{ position:absolute; inset:0; display:flex; flex-direction:column; padding:22px 26px; }
@@ -366,7 +378,7 @@
 
   /* ============ MEME BREAK ============ */
   .meme-card{
-    margin-top:22px; max-width:340px; border-radius:14px; overflow:hidden;
+    margin-top:18px; max-width:230px; border-radius:14px; overflow:hidden;
     border:1px solid var(--line); background:#000; box-shadow:var(--shadow);
     container-type:inline-size;
   }
@@ -714,6 +726,44 @@
 
   function pad(n){ return n < 10 ? '0' + n : '' + n; }
 
+  /* ---- Scale-to-fit: shrink a slide's content so it never needs to scroll ---- */
+  function fitSlide(slideEl){
+    var inner = slideEl.querySelector('.slide-inner');
+    if (!inner) return;
+    inner.style.transform = 'none';
+    var available = slideEl.clientHeight;
+    var natural = inner.scrollHeight;
+    if (natural > available && available > 0) {
+      var scale = Math.max(0.28, available / natural);
+      inner.style.transform = 'scale(' + scale + ')';
+    }
+  }
+  function fitAllSlides(){ slides.forEach(fitSlide); }
+  function fitCurrent(){ fitSlide(slides[index]); }
+
+  var resizeTimer = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(fitAllSlides, 120);
+  });
+  window.addEventListener('orientationchange', function(){
+    setTimeout(fitAllSlides, 200);
+  });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(fitAllSlides);
+  }
+  // meme images load async from an external host — refit once each one settles
+  var imgs = document.querySelectorAll('.slide img');
+  var pending = imgs.length;
+  if (pending === 0) { fitAllSlides(); }
+  imgs.forEach(function(img){
+    if (img.complete) { pending--; }
+    else {
+      img.addEventListener('load', function(){ fitAllSlides(); pending--; });
+      img.addEventListener('error', function(){ fitAllSlides(); pending--; });
+    }
+  });
+
   function goTo(i){
     index = Math.max(0, Math.min(total - 1, i));
     track.style.transform = 'translateX(-' + (index / total * 100) + '%)';
@@ -753,6 +803,8 @@
   }, {passive:true});
 
   goTo(0);
+  fitAllSlides();
+  setTimeout(fitAllSlides, 60);
 
   /* ---- Slide 2: compare slider ---- */
   var compareRange = document.getElementById('compareRange');
@@ -780,6 +832,7 @@
       document.querySelectorAll('#formatChips .chip').forEach(function(c){ c.setAttribute('aria-pressed','false'); });
       chip.setAttribute('aria-pressed','true');
       chipDetail.textContent = chip.getAttribute('data-detail');
+      fitCurrent();
     });
   });
 
@@ -791,6 +844,7 @@
     if (v < 33) paceResult.innerHTML = '<strong>More time needed:</strong> the lesson offers extra worked examples and step-by-step practice before moving on.';
     else if (v > 66) paceResult.innerHTML = '<strong>Ready to advance:</strong> a challenge activity unlocks, extending the lesson beyond the standard pace.';
     else paceResult.innerHTML = '<strong>At an even pace:</strong> the lesson offers a balanced mix of guided examples and independent practice.';
+    fitCurrent();
   }
   paceRange.addEventListener('input', function(){ setPace(this.value); });
   setPace(50);
@@ -809,6 +863,7 @@
       thumb.classList.toggle('on', role === 'now');
       var d = roleData[role];
       roleResult.innerHTML = '<div class="rr-tag" style="color:' + d.color + '">' + d.tag + '</div><div class="rr-title">' + d.title + '</div><p class="rr-body">' + d.body + '</p>';
+      fitCurrent();
     });
   });
 })();
