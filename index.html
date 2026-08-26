@@ -135,6 +135,24 @@
   .s-title{ min-height:100%; display:flex; flex-direction:column; justify-content:center; }
   @media (prefers-reduced-motion:reduce){ .slide-inner{ transition:none; } }
 
+  /* Two-column report layout: text on the left, meme + topic visual stacked on the right — no divider between them */
+  .slide-inner.split{
+    max-width:1040px;
+    display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+    column-gap:clamp(24px,5cqw,56px); row-gap:0;
+    align-items:start;
+  }
+  .split-left{ min-width:0; }
+  .split-right{ min-width:0; display:flex; flex-direction:column; align-items:center; gap:18px; padding-top:2px; }
+  .split-right .compare,
+  .split-right .pace-wrap,
+  .split-right .toggle-wrap{ width:100%; margin-top:0; }
+  .split-right .compare-caption{ width:100%; }
+  @container (max-width:640px){
+    .slide-inner.split{ grid-template-columns:1fr; }
+    .split-right{ margin-top:22px; }
+  }
+
   .eyebrow{
     font-family:var(--font-mono); font-size:.72rem; letter-spacing:.2em; text-transform:uppercase;
     color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:18px;
@@ -208,7 +226,7 @@
   }
   .compare-pane{ position:absolute; inset:0; display:flex; flex-direction:column; padding:22px 26px; }
   .compare-pane .pane-label{ font-family:var(--font-mono); font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; }
-  .compare-pane .pane-title{ font-family:var(--font-display); font-weight:600; font-size:1.5rem; margin-top:6px; }
+  .compare-pane .pane-title{ font-family:var(--font-display); font-weight:600; font-size:clamp(.95rem,7cqw,1.5rem); line-height:1.15; margin-top:6px; max-width:40%; }
   .pane-visual{ flex:1; display:flex; align-items:center; justify-content:center; min-height:0; }
   .pane-visual svg{ width:min(190px,40cqw); height:auto; }
   .pane-analog{ background:linear-gradient(160deg,#1a181e,#0a090c); color:#ffffff; }
@@ -378,7 +396,7 @@
 
   /* ============ MEME BREAK ============ */
   .meme-card{
-    margin-top:18px; max-width:230px; border-radius:14px; overflow:hidden;
+    margin-top:0; width:100%; max-width:300px; border-radius:14px; overflow:hidden;
     border:1px solid var(--line); background:#000; box-shadow:var(--shadow);
     container-type:inline-size;
   }
@@ -447,10 +465,21 @@
 
       <!-- SLIDE 2 — HOOK QUESTION -->
       <section class="slide" data-title="Opening Question">
-        <div class="slide-inner">
+        <div class="slide-inner split">
+          <div class="split-left">
           <div class="eyebrow">Opening Question</div>
           <h1 class="headline">How has technology changed the way we learn today?</h1>
           <p class="body-text">Unlike before, learning is no longer limited to books, classrooms, and traditional lectures. With digital technology, students can access information anytime, collaborate with others, and create new ways of showing what they know.</p>
+          </div>
+          <div class="split-right">
+
+          <div class="meme-card">
+            <div class="meme-img-wrap">
+              <img src="https://i.imgflip.com/30b1gx.jpg" alt="Drake reaction meme: rejecting one option, approving another" loading="lazy">
+              <div class="drake-cap top">Learning only from a textbook</div>
+              <div class="drake-cap bottom">Learning from videos, sims, and AI</div>
+            </div>
+          </div>
 
           <div class="compare" id="compare">
             <div class="compare-pane pane-analog">
@@ -495,12 +524,6 @@
           </div>
           <p class="compare-caption">Drag the divider — or use arrow keys when focused</p>
 
-          <div class="meme-card">
-            <div class="meme-img-wrap">
-              <img src="https://i.imgflip.com/30b1gx.jpg" alt="Drake reaction meme: rejecting one option, approving another" loading="lazy">
-              <div class="drake-cap top">Learning only from a textbook</div>
-              <div class="drake-cap bottom">Learning from videos, sims, and AI</div>
-            </div>
           </div>
         </div>
       </section>
@@ -547,7 +570,8 @@
 
       <!-- SLIDE 4 — ROLE 1: INTERACTIVE -->
       <section class="slide" data-title="Role 1">
-        <div class="slide-inner">
+        <div class="slide-inner split">
+          <div class="split-left">
           <div class="eyebrow">Role 01 &mdash; Engagement</div>
           <h1 class="headline">Makes learning more <em>interactive</em></h1>
           <p class="body-text">Instead of only listening to lectures, students learn through videos, simulations, online activities, and interactive platforms — experiencing difficult concepts in a more visual, practical way.</p>
@@ -559,6 +583,8 @@
             <button class="chip" data-detail="Shared boards and live documents let a whole class build one idea together, in real time.">Interactive Platform</button>
           </div>
           <p class="chip-detail" id="formatDetail">Click a format above to see how it changes the lesson.</p>
+          </div>
+          <div class="split-right">
 
           <div class="meme-card">
             <div class="meme-img-wrap">
@@ -566,12 +592,15 @@
               <div class="meme-cap bottom">When the simulation actually makes it click</div>
             </div>
           </div>
+
+          </div>
         </div>
       </section>
 
       <!-- SLIDE 5 — ROLE 2: CREATIVITY -->
       <section class="slide" data-title="Role 2">
-        <div class="slide-inner">
+        <div class="slide-inner split">
+          <div class="split-left">
           <div class="eyebrow">Role 02 &mdash; Expression</div>
           <h1 class="headline">Encourages <em>creativity</em></h1>
           <p class="body-text">Technology gives students more ways to express their ideas. Instead of only writing assignments, they can create videos, presentations, digital artworks, podcasts, and other multimedia projects — using their imagination to develop creativity.</p>
@@ -582,6 +611,8 @@
             <div class="gallery-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M9 22h6"/></svg><span>Podcasts</span></div>
             <div class="gallery-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg><span>Presentations</span></div>
           </div>
+          </div>
+          <div class="split-right">
 
           <div class="meme-card">
             <div class="meme-img-wrap">
@@ -589,15 +620,27 @@
               <div class="meme-cap bottom">A "written report" becomes a video essay</div>
             </div>
           </div>
+
+          </div>
         </div>
       </section>
 
       <!-- SLIDE 6 — ROLE 3: PERSONALIZED -->
       <section class="slide" data-title="Role 3">
-        <div class="slide-inner">
+        <div class="slide-inner split">
+          <div class="split-left">
           <div class="eyebrow">Role 03 &mdash; Flexibility</div>
           <h1 class="headline">Supports <em>personalized</em> learning</h1>
           <p class="body-text">Every student learns differently. Digital tools help students learn at their own pace by providing additional resources, feedback, and activities based on their needs — making education more flexible and inclusive.</p>
+          </div>
+          <div class="split-right">
+
+          <div class="meme-card">
+            <div class="meme-img-wrap">
+              <img src="https://i.imgflip.com/1g8my4.jpg" alt="Sweating man deciding between two buttons meme" loading="lazy">
+              <div class="meme-cap bottom">Deciding your learning path in real time</div>
+            </div>
+          </div>
 
           <div class="pace-wrap">
             <div class="pace-track">
@@ -607,21 +650,26 @@
             <div class="pace-result" id="paceResult"><strong>At an even pace:</strong> the lesson offers a balanced mix of guided examples and independent practice.</div>
           </div>
 
-          <div class="meme-card">
-            <div class="meme-img-wrap">
-              <img src="https://i.imgflip.com/1g8my4.jpg" alt="Sweating man deciding between two buttons meme" loading="lazy">
-              <div class="meme-cap bottom">Deciding your learning path in real time</div>
-            </div>
           </div>
         </div>
       </section>
 
       <!-- SLIDE 7 — ROLE 4: TEACHER -->
       <section class="slide" data-title="Role 4">
-        <div class="slide-inner">
+        <div class="slide-inner split">
+          <div class="split-left">
           <div class="eyebrow">Role 04 &mdash; The Educator</div>
           <h1 class="headline">Changes the role of <em>teachers</em></h1>
           <p class="body-text">Technology does not replace teachers. It shifts their role from being the only source of information into guides and facilitators of learning — helping students analyze information, think critically, and use technology responsibly.</p>
+          </div>
+          <div class="split-right">
+
+          <div class="meme-card">
+            <div class="meme-img-wrap">
+              <img src="https://i.imgflip.com/24y43o.jpg" alt="Change my mind meme" loading="lazy">
+              <div class="meme-cap top">Teachers didn't get replaced</div>
+            </div>
+          </div>
 
           <div class="toggle-wrap">
             <div class="toggle" id="roleToggle">
@@ -636,18 +684,14 @@
             </div>
           </div>
 
-          <div class="meme-card">
-            <div class="meme-img-wrap">
-              <img src="https://i.imgflip.com/24y43o.jpg" alt="Change my mind meme" loading="lazy">
-              <div class="meme-cap top">Teachers didn't get replaced</div>
-            </div>
           </div>
         </div>
       </section>
 
       <!-- SLIDE 8 — CHALLENGES -->
       <section class="slide" data-title="Challenges">
-        <div class="slide-inner">
+        <div class="slide-inner split">
+          <div class="split-left">
           <div class="eyebrow analog">The Other Side</div>
           <h1 class="headline">Real benefits, real <em style="color:var(--ink)">challenges</em></h1>
           <p class="body-text">Although technology provides many benefits, it also comes with real challenges that teachers and schools have to plan for.</p>
@@ -666,12 +710,16 @@
               <div class="challenge-body">Teachers need proper training to use technology effectively — without it, digital tools can add confusion instead of value.</div>
             </details>
           </div>
+          </div>
+          <div class="split-right">
 
           <div class="meme-card">
             <div class="meme-img-wrap">
               <img src="https://i.imgflip.com/wxica.jpg" alt="This is fine dog sitting in a burning room meme" loading="lazy">
-              <div class="meme-cap top">When the wifi drops mid-lesson</div>
+              <div class="meme-cap bottom">When the wifi drops mid-lesson</div>
             </div>
+          </div>
+
           </div>
         </div>
       </section>
