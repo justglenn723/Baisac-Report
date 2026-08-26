@@ -7,7 +7,7 @@
 <meta name="description" content="An interactive presentation on how digital technology is transforming creative pedagogy." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Anton&display=swap" rel="stylesheet">
 
 <style>
   /* ============ TOKENS ============ */
@@ -22,9 +22,11 @@
     --accent: #ff2f88;
     --accent-soft: #ff2f881a;
     --shadow: 0 18px 50px rgba(21,19,26,0.14);
+    --stage-bg: #201d26;
     --font-display: 'Fraunces', 'Iowan Old Style', ui-serif, Georgia, serif;
     --font-body: 'IBM Plex Sans', -apple-system, Segoe UI, sans-serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --font-meme: 'Anton', 'Arial Narrow', sans-serif;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -38,6 +40,7 @@
       --accent: #ff3f95;
       --accent-soft: #ff3f9526;
       --shadow: 0 18px 50px rgba(0,0,0,0.5);
+      --stage-bg: #08070a;
     }
   }
   :root[data-theme="dark"]{
@@ -51,13 +54,14 @@
     --accent: #ff3f95;
     --accent-soft: #ff3f9526;
     --shadow: 0 18px 50px rgba(0,0,0,0.5);
+    --stage-bg: #08070a;
   }
 
   *,*::before,*::after{ box-sizing:border-box; }
   html,body{ height:100%; }
   body{
     margin:0;
-    background:var(--bg);
+    background:var(--stage-bg);
     color:var(--ink);
     font-family:var(--font-body);
     overflow:hidden;
@@ -78,13 +82,28 @@
     :root:not([data-theme="light"]) .grain{ mix-blend-mode:overlay; opacity:.35; }
   }
 
-  .app{ position:relative; height:100vh; display:flex; flex-direction:column; }
+  /* ============ STAGE (PowerPoint-style 16:9 slide, centered on a dark desk) ============ */
+  .stage{
+    height:100vh; width:100vw; display:flex; align-items:center; justify-content:center;
+    padding:3vh 3vw; position:relative; z-index:1;
+  }
+  .app{
+    position:relative; z-index:1;
+    aspect-ratio:16/9;
+    width:min(100%, calc((100vh - 6vh) * 16 / 9));
+    max-height:100%;
+    display:flex; flex-direction:column;
+    background:var(--bg);
+    border-radius:10px; overflow:hidden;
+    box-shadow:0 40px 120px rgba(0,0,0,.55), 0 0 0 1px var(--line);
+    container-type:inline-size;
+  }
 
   /* ============ TOPBAR ============ */
   .topbar{
     z-index:2; flex:0 0 auto;
     display:flex; align-items:center; justify-content:space-between;
-    padding:22px clamp(20px,4vw,52px) 6px;
+    padding:22px clamp(20px,4cqw,52px) 6px;
   }
   .brand{ font-family:var(--font-display); font-style:italic; font-weight:600; font-size:1.05rem; letter-spacing:.01em; }
   .brand .amp{ color:var(--muted); font-style:normal; margin:0 .12em; }
@@ -94,12 +113,12 @@
 
   /* ============ VIEWPORT / TRACK ============ */
   .viewport{ flex:1 1 auto; overflow:hidden; position:relative; z-index:1; }
-  .track{ display:flex; height:100%; width:900vw; transition:transform .65s cubic-bezier(.65,0,.24,1); will-change:transform; }
+  .track{ display:flex; height:100%; width:900%; transition:transform .65s cubic-bezier(.65,0,.24,1); will-change:transform; }
   @media (prefers-reduced-motion:reduce){ .track{ transition:none; } }
   .slide{
-    width:100vw; height:100%; flex:0 0 100vw;
+    width:100%; height:100%; flex:0 0 100%;
     display:flex; align-items:center; justify-content:center;
-    padding:0 clamp(20px,6vw,80px);
+    padding:0 clamp(20px,6cqw,80px);
     overflow-y:auto;
   }
   .slide-inner{ width:100%; max-width:980px; margin:0 auto; padding:20px 0 40px; }
@@ -112,16 +131,16 @@
   .eyebrow.analog{ color:var(--ink); }
   .eyebrow.analog::before{ background:var(--ink); }
 
-  .headline{ font-size:clamp(1.9rem,4vw,3.1rem); line-height:1.1; letter-spacing:-.01em; max-width:16ch; }
+  .headline{ font-size:clamp(1.9rem,4cqw,3.1rem); line-height:1.1; letter-spacing:-.01em; max-width:16ch; }
   .headline em{ font-style:italic; color:var(--accent); }
-  .body-text{ font-size:clamp(.98rem,1.6vw,1.12rem); line-height:1.75; color:var(--ink-soft); max-width:62ch; font-weight:400; margin-top:20px; }
+  .body-text{ font-size:clamp(.98rem,1.6cqw,1.12rem); line-height:1.75; color:var(--ink-soft); max-width:62ch; font-weight:400; margin-top:20px; }
   .body-text + .body-text{ margin-top:14px; }
 
   /* ============ LEDGE / NAV ============ */
   .ledge{
     z-index:2; flex:0 0 auto;
     display:flex; align-items:center; justify-content:center; gap:18px;
-    padding:14px clamp(20px,4vw,52px) 22px;
+    padding:14px clamp(20px,4cqw,52px) 22px;
   }
   .nav-btn{
     width:38px; height:38px; border-radius:50%;
@@ -143,7 +162,7 @@
   .dot:hover{ background:var(--accent); }
   .dot[aria-selected="true"]{ background:var(--accent); width:22px; border-radius:5px; }
 
-  .kbd-hint{ position:fixed; bottom:14px; right:20px; font-family:var(--font-mono); font-size:.68rem; color:var(--muted); z-index:2; letter-spacing:.05em; }
+  .kbd-hint{ position:absolute; bottom:14px; right:20px; font-family:var(--font-mono); font-size:.68rem; color:var(--muted); z-index:2; letter-spacing:.05em; }
   @media (max-width:720px){ .kbd-hint{ display:none; } }
 
   /* ============ SHARED CARD ============ */
@@ -153,12 +172,12 @@
   .s-title{ text-align:left; }
   .s-title .wordmark{
     font-family:var(--font-display); font-style:italic; font-weight:600;
-    font-size:clamp(3rem,9vw,6.4rem); line-height:.98; letter-spacing:-.01em; margin-bottom:22px;
+    font-size:clamp(3rem,9cqw,6.4rem); line-height:.98; letter-spacing:-.01em; margin-bottom:22px;
   }
   .s-title .wordmark .word-chalk{ color:var(--ink); }
   .s-title .wordmark .amp{ color:var(--muted); font-style:normal; padding:0 .08em; }
   .s-title .wordmark .word-circuit{ color:var(--accent); }
-  .s-title .topic{ font-size:clamp(1.15rem,2.4vw,1.55rem); font-weight:500; max-width:20ch; margin-bottom:10px; }
+  .s-title .topic{ font-size:clamp(1.15rem,2.4cqw,1.55rem); font-weight:500; max-width:20ch; margin-bottom:10px; }
   .s-title .kicker{ font-family:var(--font-mono); font-size:.75rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:26px; }
   .begin-hint{ margin-top:44px; display:inline-flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:.78rem; letter-spacing:.08em; color:var(--muted); }
   .begin-hint svg{ width:18px; height:18px; animation:nudge 1.6s ease-in-out infinite; }
@@ -172,17 +191,16 @@
 
   /* ============ SLIDE 2 — COMPARE SLIDER ============ */
   .compare{
-    position:relative; margin-top:30px; height:min(320px,42vh); border-radius:18px; overflow:hidden;
+    position:relative; margin-top:30px; height:min(260px,38cqw); border-radius:18px; overflow:hidden;
     border:1px solid var(--line); box-shadow:var(--shadow);
   }
-  .compare-pane{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:22px 26px; }
+  .compare-pane{ position:absolute; inset:0; display:flex; flex-direction:column; padding:22px 26px; }
   .compare-pane .pane-label{ font-family:var(--font-mono); font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; }
   .compare-pane .pane-title{ font-family:var(--font-display); font-weight:600; font-size:1.5rem; margin-top:6px; }
-  .compare-pane .pane-icons{ display:flex; gap:16px; align-self:flex-start; }
-  .compare-pane .pane-icons svg{ width:30px; height:30px; }
+  .pane-visual{ flex:1; display:flex; align-items:center; justify-content:center; min-height:0; }
+  .pane-visual svg{ width:min(190px,40cqw); height:auto; }
   .pane-analog{ background:linear-gradient(160deg,#1a181e,#0a090c); color:#ffffff; }
   .pane-analog .pane-label{ color:rgba(255,255,255,.62); }
-  .pane-analog .pane-icons svg{ stroke:#ffffff; }
   .pane-analog::after{
     content:''; position:absolute; inset:0; opacity:.5; pointer-events:none;
     background-image:
@@ -191,11 +209,46 @@
   }
   .pane-digital{ background:linear-gradient(160deg,#4a0d33,#2b0a1e); color:#ffffff; }
   .pane-digital .pane-label{ color:#ff8ac4; }
-  .pane-digital .pane-icons svg{ stroke:#ff8ac4; }
   .pane-digital::after{
     content:''; position:absolute; inset:0; opacity:.35; pointer-events:none;
     background-image:linear-gradient(rgba(255,138,196,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(255,138,196,.18) 1px, transparent 1px);
     background-size:26px 26px;
+  }
+
+  /* chalkboard illustration */
+  .chalk-line{ stroke:#ffffff; stroke-width:3; stroke-linecap:round; fill:none; opacity:.9; }
+  .chalk-line{ animation:chalkWrite 6s ease-in-out infinite; }
+  .chalk-line.l1{ stroke-dasharray:120; stroke-dashoffset:120; animation-delay:0s; }
+  .chalk-line.l2{ stroke-dasharray:90; stroke-dashoffset:90; animation-delay:.5s; }
+  .chalk-line.l3{ stroke-dasharray:105; stroke-dashoffset:105; animation-delay:1s; }
+  @keyframes chalkWrite{
+    0%{ stroke-dashoffset:var(--len); opacity:0; }
+    8%{ opacity:.9; }
+    38%{ stroke-dashoffset:0; opacity:.9; }
+    75%{ stroke-dashoffset:0; opacity:.9; }
+    92%{ opacity:0; }
+    100%{ stroke-dashoffset:var(--len); opacity:0; }
+  }
+  .chalk-line.l1{ --len:120; }
+  .chalk-line.l2{ --len:90; }
+  .chalk-line.l3{ --len:105; }
+
+  /* digital wifi illustration */
+  .wifi-arc{ stroke:#ff8ac4; stroke-width:3; stroke-linecap:round; fill:none; opacity:0; transform-box:fill-box; transform-origin:50% 100%; animation:wifiPulse 2.4s ease-in-out infinite; }
+  .wifi-arc.a1{ animation-delay:0s; }
+  .wifi-arc.a2{ animation-delay:.3s; }
+  .wifi-arc.a3{ animation-delay:.6s; }
+  @keyframes wifiPulse{
+    0%{ opacity:0; transform:scale(.9); }
+    35%{ opacity:1; transform:scale(1); }
+    75%{ opacity:1; transform:scale(1); }
+    100%{ opacity:0; transform:scale(1.04); }
+  }
+  .cursor-blink{ animation:blink 1.4s ease-in-out infinite; transform-origin:center; }
+  @media (prefers-reduced-motion:reduce){
+    .chalk-line{ animation:none; opacity:.9; stroke-dashoffset:0; }
+    .wifi-arc{ animation:none; opacity:1; }
+    .cursor-blink{ animation:none; }
   }
   .clip-wrap{ position:absolute; inset:0; }
   .compare-handle-track{ position:absolute; inset:0; z-index:3; }
@@ -313,27 +366,36 @@
 
   /* ============ MEME BREAK ============ */
   .meme-card{
-    margin-top:30px; max-width:420px; border-radius:16px; overflow:hidden;
-    border:1px solid var(--line); background:var(--surface); box-shadow:var(--shadow);
+    margin-top:22px; max-width:340px; border-radius:14px; overflow:hidden;
+    border:1px solid var(--line); background:#000; box-shadow:var(--shadow);
+    container-type:inline-size;
   }
-  .meme-tag{
-    display:flex; align-items:center; gap:8px; padding:10px 16px;
-    font-family:var(--font-mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--accent); border-bottom:1px solid var(--line);
+  .meme-img-wrap{ position:relative; line-height:0; }
+  .meme-img-wrap img{ width:100%; display:block; }
+
+  /* classic impact-style overlay caption, for photo-based templates */
+  .meme-cap{
+    position:absolute; left:4%; right:4%; text-align:center;
+    font-family:var(--font-meme); font-weight:400; text-transform:uppercase;
+    color:#ffffff; letter-spacing:.01em; line-height:1.12;
+    font-size:clamp(.95rem,7.5cqw,1.6rem);
+    text-shadow:2px 0 0 #000,-2px 0 0 #000,0 2px 0 #000,0 -2px 0 #000,2px 2px 0 #000,-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000;
   }
-  .meme-tag svg{ width:13px; height:13px; }
-  .meme-img-wrap{ background:var(--surface-2); display:flex; align-items:center; justify-content:center; aspect-ratio:5/4; }
-  .meme-img-wrap img{ width:100%; height:100%; object-fit:contain; display:block; }
-  .meme-caption{ padding:14px 18px 18px; font-size:.92rem; font-weight:500; line-height:1.5; }
-  .meme-caption .reject{ color:var(--ink-soft); }
-  .meme-caption .reject::before{ content:'✕  '; color:var(--ink); font-weight:700; }
-  .meme-caption .approve{ color:var(--ink); }
-  .meme-caption .approve::before{ content:'✓  '; color:var(--accent); font-weight:700; }
-  .meme-caption .line + .line{ margin-top:8px; }
+  .meme-cap.top{ top:4%; }
+  .meme-cap.bottom{ bottom:4%; }
+
+  /* Drake-style caption, sitting in the template's own blank margin */
+  .drake-cap{
+    position:absolute; right:4%; width:46%; display:flex; align-items:center;
+    font-family:var(--font-body); font-weight:700; color:#191919;
+    font-size:clamp(.72rem,4.6cqw,1.05rem); line-height:1.3;
+  }
+  .drake-cap.top{ top:2%; height:46%; }
+  .drake-cap.bottom{ top:52%; height:46%; }
 
   /* ============ CONCLUSION ============ */
   .s-conclusion .headline{ max-width:18ch; }
-  .thank-you{ font-family:var(--font-display); font-style:italic; font-weight:600; font-size:clamp(2.2rem,6vw,3.6rem); margin-top:38px; }
+  .thank-you{ font-family:var(--font-display); font-style:italic; font-weight:600; font-size:clamp(2.2rem,6cqw,3.6rem); margin-top:38px; }
   .replay-hint{ margin-top:20px; font-family:var(--font-mono); font-size:.75rem; color:var(--muted); }
 
   /* ============ RESPONSIVE ============ */
@@ -347,6 +409,7 @@
 
 <div class="grain" id="grain"></div>
 
+<div class="stage">
 <div class="app">
   <header class="topbar">
     <span class="brand"><span class="word-chalk">Chalk</span><span class="amp">&amp;</span><span class="word-circuit">Circuit</span></span>
@@ -383,9 +446,13 @@
                 <div class="pane-label">Before</div>
                 <div class="pane-title">Traditional Classroom</div>
               </div>
-              <div class="pane-icons" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v12H4z"/><path d="M8 20h8M12 17v3"/></svg>
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h12a1 1 0 0 1 1 1v14"/><path d="M6 21a2 2 0 0 1 0-4h13"/></svg>
+              <div class="pane-visual" aria-hidden="true">
+                <svg viewBox="0 0 200 160">
+                  <rect x="12" y="12" width="176" height="118" rx="6" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="3"/>
+                  <path class="chalk-line l1" d="M32 46 H152"/>
+                  <path class="chalk-line l2" d="M32 76 H122"/>
+                  <path class="chalk-line l3" d="M32 106 H142"/>
+                </svg>
               </div>
             </div>
             <div class="clip-wrap" id="digitalClip">
@@ -394,9 +461,16 @@
                   <div class="pane-label">Now</div>
                   <div class="pane-title">Digital Classroom</div>
                 </div>
-                <div class="pane-icons" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg>
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+                <div class="pane-visual" aria-hidden="true">
+                  <svg viewBox="0 0 200 160">
+                    <path class="wifi-arc a1" d="M85 78 a20 20 0 0 1 30 0"/>
+                    <path class="wifi-arc a2" d="M73 68 a37 37 0 0 1 54 0"/>
+                    <path class="wifi-arc a3" d="M61 58 a54 54 0 0 1 78 0"/>
+                    <circle cx="100" cy="86" r="3.5" fill="#ff8ac4"/>
+                    <rect x="55" y="100" width="90" height="52" rx="4" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="3"/>
+                    <rect x="65" y="110" width="70" height="32" rx="2" fill="rgba(255,138,196,.1)"/>
+                    <rect class="cursor-blink" x="72" y="118" width="3" height="10" fill="#ff8ac4"/>
+                  </svg>
                 </div>
               </div>
             </div>
@@ -410,11 +484,10 @@
           <p class="compare-caption">Drag the divider — or use arrow keys when focused</p>
 
           <div class="meme-card">
-            <div class="meme-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>Meme Break</div>
-            <div class="meme-img-wrap"><img src="https://i.imgflip.com/30b1gx.jpg" alt="Drake reaction meme: rejecting one option, approving another" loading="lazy"></div>
-            <div class="meme-caption">
-              <div class="line reject">Learning only from a textbook</div>
-              <div class="line approve">Learning from videos, sims, and AI</div>
+            <div class="meme-img-wrap">
+              <img src="https://i.imgflip.com/30b1gx.jpg" alt="Drake reaction meme: rejecting one option, approving another" loading="lazy">
+              <div class="drake-cap top">Learning only from a textbook</div>
+              <div class="drake-cap bottom">Learning from videos, sims, and AI</div>
             </div>
           </div>
         </div>
@@ -476,10 +549,9 @@
           <p class="chip-detail" id="formatDetail">Click a format above to see how it changes the lesson.</p>
 
           <div class="meme-card">
-            <div class="meme-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>Meme Break</div>
-            <div class="meme-img-wrap"><img src="https://i.imgflip.com/2kbn1e.jpg" alt="Surprised Pikachu meme" loading="lazy"></div>
-            <div class="meme-caption">
-              <div class="line">When the interactive simulation actually makes it click</div>
+            <div class="meme-img-wrap">
+              <img src="https://i.imgflip.com/2kbn1e.jpg" alt="Surprised Pikachu meme" loading="lazy">
+              <div class="meme-cap bottom">When the simulation actually makes it click</div>
             </div>
           </div>
         </div>
@@ -500,10 +572,9 @@
           </div>
 
           <div class="meme-card">
-            <div class="meme-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>Meme Break</div>
-            <div class="meme-img-wrap"><img src="https://i.imgflip.com/1ur9b0.jpg" alt="Distracted boyfriend meme" loading="lazy"></div>
-            <div class="meme-caption">
-              <div class="line">Students, when a "written report" quietly becomes a video essay</div>
+            <div class="meme-img-wrap">
+              <img src="https://i.imgflip.com/1ur9b0.jpg" alt="Distracted boyfriend meme" loading="lazy">
+              <div class="meme-cap bottom">A "written report" becomes a video essay</div>
             </div>
           </div>
         </div>
@@ -525,10 +596,9 @@
           </div>
 
           <div class="meme-card">
-            <div class="meme-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>Meme Break</div>
-            <div class="meme-img-wrap"><img src="https://i.imgflip.com/1g8my4.jpg" alt="Sweating man deciding between two buttons meme" loading="lazy"></div>
-            <div class="meme-caption">
-              <div class="line">The lesson platform, deciding your learning path in real time</div>
+            <div class="meme-img-wrap">
+              <img src="https://i.imgflip.com/1g8my4.jpg" alt="Sweating man deciding between two buttons meme" loading="lazy">
+              <div class="meme-cap bottom">Deciding your learning path in real time</div>
             </div>
           </div>
         </div>
@@ -555,10 +625,9 @@
           </div>
 
           <div class="meme-card">
-            <div class="meme-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>Meme Break</div>
-            <div class="meme-img-wrap"><img src="https://i.imgflip.com/24y43o.jpg" alt="Change my mind meme" loading="lazy"></div>
-            <div class="meme-caption">
-              <div class="line">Teachers didn't get replaced. Their job just got a serious upgrade.</div>
+            <div class="meme-img-wrap">
+              <img src="https://i.imgflip.com/24y43o.jpg" alt="Change my mind meme" loading="lazy">
+              <div class="meme-cap top">Teachers didn't get replaced</div>
             </div>
           </div>
         </div>
@@ -587,10 +656,9 @@
           </div>
 
           <div class="meme-card">
-            <div class="meme-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>Meme Break</div>
-            <div class="meme-img-wrap"><img src="https://i.imgflip.com/wxica.jpg" alt="This is fine dog sitting in a burning room meme" loading="lazy"></div>
-            <div class="meme-caption">
-              <div class="line">When the wifi drops mid-lesson and "digital-first" becomes "digital-never"</div>
+            <div class="meme-img-wrap">
+              <img src="https://i.imgflip.com/wxica.jpg" alt="This is fine dog sitting in a burning room meme" loading="lazy">
+              <div class="meme-cap top">When the wifi drops mid-lesson</div>
             </div>
           </div>
         </div>
@@ -620,6 +688,7 @@
   </nav>
   <div class="kbd-hint">&larr; &rarr; to navigate &middot; drag sliders to interact</div>
 </div>
+</div>
 
 <script>
 (function(){
@@ -647,7 +716,7 @@
 
   function goTo(i){
     index = Math.max(0, Math.min(total - 1, i));
-    track.style.transform = 'translateX(-' + (index * 100) + 'vw)';
+    track.style.transform = 'translateX(-' + (index * 100) + '%)';
     counter.textContent = pad(index + 1) + ' / ' + pad(total);
     dots.forEach(function(d, di){ d.setAttribute('aria-selected', di === index ? 'true' : 'false'); });
     slides.forEach(function(s, si){
