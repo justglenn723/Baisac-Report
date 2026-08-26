@@ -153,6 +153,20 @@
     .split-right{ margin-top:22px; }
   }
 
+  /* Stacked variant: text + meme on top, one full-width widget below a divider line */
+  .slide-inner.split-stack{ max-width:1040px; display:flex; flex-direction:column; }
+  .split-top{
+    display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+    column-gap:clamp(24px,5cqw,56px); align-items:start;
+  }
+  .split-bottom{ margin-top:26px; padding-top:22px; border-top:1px solid var(--line); }
+  .split-bottom .compare{ width:100%; margin-top:0; }
+  .split-bottom .compare-caption{ width:100%; }
+  @container (max-width:640px){
+    .split-top{ grid-template-columns:1fr; }
+    .split-top .split-right{ margin-top:22px; }
+  }
+
   .eyebrow{
     font-family:var(--font-mono); font-size:.72rem; letter-spacing:.2em; text-transform:uppercase;
     color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:18px;
@@ -414,6 +428,13 @@
   .meme-cap.top{ top:4%; }
   .meme-cap.bottom{ bottom:4%; }
 
+  /* caption sitting inside a template's own blank white margin — dark text, no outline */
+  .meme-cap.on-light{
+    color:#161616; text-shadow:none; text-transform:none; letter-spacing:0;
+    font-family:var(--font-body); font-weight:700; line-height:1.28;
+    font-size:clamp(.82rem,6.4cqw,1.08rem);
+  }
+
   /* Drake-style caption, sitting in the template's own blank margin */
   .drake-cap{
     position:absolute; right:4%; width:46%; display:flex; align-items:center;
@@ -465,7 +486,8 @@
 
       <!-- SLIDE 2 — HOOK QUESTION -->
       <section class="slide" data-title="Opening Question">
-        <div class="slide-inner split">
+        <div class="slide-inner split-stack">
+          <div class="split-top">
           <div class="split-left">
           <div class="eyebrow">Opening Question</div>
           <h1 class="headline">How has technology changed the way we learn today?</h1>
@@ -481,6 +503,10 @@
             </div>
           </div>
 
+          </div>
+          </div>
+
+          <div class="split-bottom">
           <div class="compare" id="compare">
             <div class="compare-pane pane-analog">
               <div>
@@ -589,7 +615,7 @@
           <div class="meme-card">
             <div class="meme-img-wrap">
               <img src="https://i.imgflip.com/2kbn1e.jpg" alt="Surprised Pikachu meme" loading="lazy">
-              <div class="meme-cap bottom">When the simulation actually makes it click</div>
+              <div class="meme-cap on-light top">When the simulation actually makes it click</div>
             </div>
           </div>
 
