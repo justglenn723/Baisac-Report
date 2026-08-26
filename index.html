@@ -162,6 +162,7 @@
   .split-bottom{ margin-top:26px; padding-top:22px; border-top:1px solid var(--line); }
   .split-bottom .compare{ width:100%; margin-top:0; }
   .split-bottom .compare-caption{ width:100%; }
+  .split-bottom .pace-wrap{ width:100%; max-width:none; margin-top:0; }
   @container (max-width:640px){
     .split-top{ grid-template-columns:1fr; }
     .split-top .split-right{ margin-top:22px; }
@@ -653,7 +654,8 @@
 
       <!-- SLIDE 6 — ROLE 3: PERSONALIZED -->
       <section class="slide" data-title="Role 3">
-        <div class="slide-inner split">
+        <div class="slide-inner split-stack">
+          <div class="split-top">
           <div class="split-left">
           <div class="eyebrow">Role 03 &mdash; Flexibility</div>
           <h1 class="headline">Supports <em>personalized</em> learning</h1>
@@ -668,6 +670,10 @@
             </div>
           </div>
 
+          </div>
+          </div>
+
+          <div class="split-bottom">
           <div class="pace-wrap">
             <div class="pace-track">
               <input type="range" class="pace-range" id="paceRange" min="0" max="100" value="50" aria-label="Adjust learning pace to see how the lesson adapts">
@@ -675,7 +681,6 @@
             </div>
             <div class="pace-result" id="paceResult"><strong>At an even pace:</strong> the lesson offers a balanced mix of guided examples and independent practice.</div>
           </div>
-
           </div>
         </div>
       </section>
