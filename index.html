@@ -163,6 +163,7 @@
   .split-bottom .compare{ width:100%; margin-top:0; }
   .split-bottom .compare-caption{ width:100%; }
   .split-bottom .pace-wrap{ width:100%; max-width:none; margin-top:0; }
+  .split-bottom .toggle-wrap{ width:100%; max-width:none; margin-top:0; }
   @container (max-width:640px){
     .split-top{ grid-template-columns:1fr; }
     .split-top .split-right{ margin-top:22px; }
@@ -687,7 +688,8 @@
 
       <!-- SLIDE 7 — ROLE 4: TEACHER -->
       <section class="slide" data-title="Role 4">
-        <div class="slide-inner split">
+        <div class="slide-inner split-stack">
+          <div class="split-top">
           <div class="split-left">
           <div class="eyebrow">Role 04 &mdash; The Educator</div>
           <h1 class="headline">Changes the role of <em>teachers</em></h1>
@@ -702,6 +704,10 @@
             </div>
           </div>
 
+          </div>
+          </div>
+
+          <div class="split-bottom">
           <div class="toggle-wrap">
             <div class="toggle" id="roleToggle">
               <div class="toggle-thumb" id="roleThumb"></div>
@@ -714,7 +720,6 @@
               <p class="rr-body">Students learned mainly by receiving facts directly from the teacher, who held most of the knowledge in the room.</p>
             </div>
           </div>
-
           </div>
         </div>
       </section>
