@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Digital Technology &amp; Creative Pedagogy — Final Report</title>
+<title>Digital &amp; Pedagogy</title>
 <meta name="description" content="An interactive site on the role of digital technology in transforming creative pedagogy." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,8 +80,8 @@
   @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .grain{ mix-blend-mode:overlay; opacity:.28; } }
 
   /* ============ AMBIENT BACKGROUND BLOBS ============ */
-  .blobs{ position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
-  .blob{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.35; animation:drift 26s ease-in-out infinite; }
+  .blobs{ position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; transition:transform .6s cubic-bezier(.2,.6,.2,1); }
+  .blob{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.35; animation:drift 26s ease-in-out infinite; will-change:transform; }
   .blob.b1{ width:46vw; height:46vw; background:var(--accent); top:-14vw; left:-12vw; animation-duration:30s; }
   .blob.b2{ width:38vw; height:38vw; background:var(--gold); bottom:-10vw; right:-8vw; animation-duration:24s; animation-delay:-6s; }
   .blob.b3{ width:30vw; height:30vw; background:var(--accent); top:38vh; right:12vw; animation-duration:34s; animation-delay:-12s; opacity:.22; }
@@ -159,7 +159,13 @@
   }
   .wordmark .word-a{ color:var(--ink); }
   .wordmark .amp{ color:var(--muted); font-style:normal; padding:0 .08em; }
-  .wordmark .word-b{ color:var(--accent); }
+  .wordmark .word-b{
+    background:linear-gradient(90deg, var(--accent), var(--gold), var(--accent));
+    background-size:200% auto; -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:hue-shift 6s linear infinite;
+  }
+  @keyframes hue-shift{ to{ background-position:200% center; } }
+  @media (prefers-reduced-motion:reduce){ .wordmark .word-b{ animation:none; background-position:0 center; } }
   .topic{ font-size:clamp(1.1rem,2.4vw,1.55rem); font-weight:500; max-width:30ch; margin-bottom:22px; }
   .presenter-name{ font-family:var(--font-mono); font-size:.85rem; letter-spacing:.04em; color:var(--ink-soft); }
   .scroll-cue{
@@ -176,6 +182,23 @@
   .title-underline.is-visible path{ animation:draw 1.1s .3s ease-out forwards; }
   @media (prefers-reduced-motion:reduce){ .title-underline path{ animation:none !important; stroke-dashoffset:0; } }
   @keyframes draw{ to{ stroke-dashoffset:0; } }
+
+  /* ============ MARQUEE ============ */
+  .marquee{
+    position:relative; z-index:2; overflow:hidden; padding:18px 0;
+    background:var(--surface); border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .marquee-track{ display:flex; width:max-content; animation:marquee 26s linear infinite; }
+  .marquee-track span{
+    display:flex; align-items:center; gap:14px; flex:0 0 auto;
+    font-family:var(--font-display); font-style:italic; font-weight:600;
+    font-size:clamp(1.1rem,2.6vw,1.6rem); color:var(--ink-soft); padding:0 22px; white-space:nowrap;
+  }
+  .marquee-track span em{ font-style:italic; color:var(--accent); }
+  .marquee-track span::after{ content:'\2726'; color:var(--gold); font-size:.8em; margin-left:22px; }
+  @keyframes marquee{ to{ transform:translateX(-50%); } }
+  .marquee:hover .marquee-track{ animation-play-state:paused; }
+  @media (prefers-reduced-motion:reduce){ .marquee-track{ animation:none; } }
 
   /* ============ DEFINITION ============ */
   .define-card{
@@ -303,7 +326,7 @@
       <div class="presenter-avatar-wrap">
         <img class="presenter-avatar" src="assets/presenter.png" alt="Jeah Jane Mae R. Baisac">
       </div>
-      <div class="kicker">MST Science — 1B &middot; Final Report</div>
+      <div class="kicker">MST Science — 1B</div>
     </div>
     <div class="wordmark"><span class="word-a">Digital</span><span class="amp">&amp;</span><span class="word-b">Pedagogy</span></div>
     <p class="topic title-underline" data-reveal-underline>The Role of Digital Technology in Transforming <em>Creative Pedagogy</em>
@@ -314,6 +337,14 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
     </a>
   </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="marquee-track">
+      <span><em>Digital Technology</em> &middot; Creative Pedagogy &middot; Innovation &middot; Engagement &middot; Critical Thinking &middot; Lifelong Learning</span>
+      <span><em>Digital Technology</em> &middot; Creative Pedagogy &middot; Innovation &middot; Engagement &middot; Critical Thinking &middot; Lifelong Learning</span>
+    </div>
+  </div>
 
   <!-- DEFINITION -->
   <section id="definition">
@@ -454,6 +485,17 @@
 
 <script>
 (function(){
+  /* ---- mouse parallax on background blobs ---- */
+  var blobs = document.querySelector('.blobs');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (blobs && !reduceMotion) {
+    window.addEventListener('mousemove', function(e){
+      var nx = (e.clientX / window.innerWidth - 0.5) * 2;
+      var ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      blobs.style.transform = 'translate(' + (nx * 22) + 'px,' + (ny * 22) + 'px)';
+    }, { passive:true });
+  }
+
   /* ---- scroll progress bar ---- */
   var progress = document.getElementById('progress');
   var toTop = document.getElementById('toTop');
