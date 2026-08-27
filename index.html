@@ -3,58 +3,63 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Chalk &amp; Circuit</title>
-<meta name="description" content="An interactive presentation on how digital technology is transforming creative pedagogy." />
+<title>Digital Technology &amp; Creative Pedagogy — Final Report</title>
+<meta name="description" content="An interactive presentation on the role of digital technology in transforming creative pedagogy." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Anton&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
   /* ============ TOKENS ============ */
   :root{
-    --bg: #ffffff;
-    --surface: #fff6fb;
-    --surface-2: #ffe1f0;
-    --ink: #15131a;
-    --ink-soft: #4a4550;
-    --muted: #85808c;
-    --line: rgba(21,19,26,0.14);
-    --accent: #ff2f88;
-    --accent-soft: #ff2f881a;
-    --shadow: 0 18px 50px rgba(21,19,26,0.14);
-    --stage-bg: #201d26;
+    --bg: #faf8f2;
+    --surface: #ffffff;
+    --surface-2: #f1eee2;
+    --ink: #1c1a2b;
+    --ink-soft: #4c4a63;
+    --muted: #8b889c;
+    --line: rgba(28,26,43,0.14);
+    --accent: #4147c9;
+    --accent-soft: #4147c91a;
+    --gold: #d99400;
+    --gold-soft: #ffc93c26;
+    --shadow: 0 18px 50px rgba(20,18,31,0.16);
+    --stage-bg: #14121f;
     --font-display: 'Fraunces', 'Iowan Old Style', ui-serif, Georgia, serif;
     --font-body: 'IBM Plex Sans', -apple-system, Segoe UI, sans-serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    --font-meme: 'Anton', 'Arial Narrow', sans-serif;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg: #0d0c10;
-      --surface: #17151c;
-      --surface-2: #241f2b;
-      --ink: #ffffff;
-      --ink-soft: #d8d3de;
-      --muted: #9992a3;
+      --bg: #121022;
+      --surface: #1b1830;
+      --surface-2: #242043;
+      --ink: #f5f4fb;
+      --ink-soft: #cfccdf;
+      --muted: #8f8ba6;
       --line: rgba(255,255,255,0.14);
-      --accent: #ff3f95;
-      --accent-soft: #ff3f9526;
+      --accent: #7b80ff;
+      --accent-soft: #7b80ff26;
+      --gold: #ffcf4d;
+      --gold-soft: #ffcf4d26;
       --shadow: 0 18px 50px rgba(0,0,0,0.5);
-      --stage-bg: #08070a;
+      --stage-bg: #08070f;
     }
   }
   :root[data-theme="dark"]{
-    --bg: #0d0c10;
-    --surface: #17151c;
-    --surface-2: #241f2b;
-    --ink: #ffffff;
-    --ink-soft: #d8d3de;
-    --muted: #9992a3;
+    --bg: #121022;
+    --surface: #1b1830;
+    --surface-2: #242043;
+    --ink: #f5f4fb;
+    --ink-soft: #cfccdf;
+    --muted: #8f8ba6;
     --line: rgba(255,255,255,0.14);
-    --accent: #ff3f95;
-    --accent-soft: #ff3f9526;
+    --accent: #7b80ff;
+    --accent-soft: #7b80ff26;
+    --gold: #ffcf4d;
+    --gold-soft: #ffcf4d26;
     --shadow: 0 18px 50px rgba(0,0,0,0.5);
-    --stage-bg: #08070a;
+    --stage-bg: #08070f;
   }
 
   *,*::before,*::after{ box-sizing:border-box; }
@@ -117,13 +122,13 @@
   }
   .brand{ font-family:var(--font-display); font-style:italic; font-weight:600; font-size:1.05rem; letter-spacing:.01em; }
   .brand .amp{ color:var(--muted); font-style:normal; margin:0 .12em; }
-  .brand .word-chalk{ color:var(--ink); }
-  .brand .word-circuit{ color:var(--accent); }
+  .brand .word-a{ color:var(--ink); }
+  .brand .word-b{ color:var(--accent); }
   .counter{ font-family:var(--font-mono); font-size:.72rem; letter-spacing:.14em; color:var(--muted); font-variant-numeric:tabular-nums; }
 
   /* ============ VIEWPORT / TRACK ============ */
   .viewport{ flex:1 1 auto; min-height:0; overflow:hidden; position:relative; z-index:1; }
-  .track{ display:flex; height:100%; width:900%; transition:transform .65s cubic-bezier(.65,0,.24,1); will-change:transform; }
+  .track{ display:flex; height:100%; width:600%; transition:transform .65s cubic-bezier(.65,0,.24,1); will-change:transform; }
   @media (prefers-reduced-motion:reduce){ .track{ transition:none; } }
   .slide{
     height:100%; flex:1 1 0%; min-width:0;
@@ -132,56 +137,20 @@
     overflow:hidden;
   }
   .slide-inner{ width:100%; max-width:980px; margin:0 auto; padding:34px 0 40px; transform-origin:top center; }
-  .s-title{ min-height:100%; display:flex; flex-direction:column; justify-content:center; }
+  .s-title, .s-define, .s-conclusion{ min-height:100%; display:flex; flex-direction:column; justify-content:center; }
   @media (prefers-reduced-motion:reduce){ .slide-inner{ transition:none; } }
-
-  /* Two-column report layout: text on the left, meme + topic visual stacked on the right — no divider between them */
-  .slide-inner.split{
-    max-width:1040px;
-    display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
-    column-gap:clamp(24px,5cqw,56px); row-gap:0;
-    align-items:start;
-  }
-  .split-left{ min-width:0; }
-  .split-right{ min-width:0; display:flex; flex-direction:column; align-items:center; gap:18px; padding-top:2px; }
-  .split-right .compare,
-  .split-right .pace-wrap,
-  .split-right .toggle-wrap{ width:100%; margin-top:0; }
-  .split-right .compare-caption{ width:100%; }
-  @container (max-width:640px){
-    .slide-inner.split{ grid-template-columns:1fr; }
-    .split-right{ margin-top:22px; }
-  }
-
-  /* Stacked variant: text + meme on top, one full-width widget below a divider line */
-  .slide-inner.split-stack{ max-width:1040px; display:flex; flex-direction:column; }
-  .split-top{
-    display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
-    column-gap:clamp(24px,5cqw,56px); align-items:start;
-  }
-  .split-bottom{ margin-top:26px; padding-top:22px; border-top:1px solid var(--line); }
-  .split-bottom .compare{ width:100%; margin-top:0; }
-  .split-bottom .compare-caption{ width:100%; }
-  .split-bottom .pace-wrap{ width:100%; max-width:none; margin-top:0; }
-  .split-bottom .toggle-wrap{ width:100%; max-width:none; margin-top:0; }
-  .split-bottom .challenge-list{ width:100%; max-width:none; margin-top:0; }
-  @container (max-width:640px){
-    .split-top{ grid-template-columns:1fr; }
-    .split-top .split-right{ margin-top:22px; }
-  }
 
   .eyebrow{
     font-family:var(--font-mono); font-size:.72rem; letter-spacing:.2em; text-transform:uppercase;
     color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:18px;
   }
   .eyebrow::before{ content:''; width:26px; height:1px; background:var(--accent); }
-  .eyebrow.analog{ color:var(--ink); }
-  .eyebrow.analog::before{ background:var(--ink); }
 
-  .headline{ font-size:clamp(1.9rem,4cqw,3.1rem); line-height:1.1; letter-spacing:-.01em; max-width:16ch; }
+  .headline{ font-size:clamp(1.9rem,4cqw,3.1rem); line-height:1.1; letter-spacing:-.01em; max-width:20ch; }
   .headline em{ font-style:italic; color:var(--accent); }
   .body-text{ font-size:clamp(.98rem,1.6cqw,1.12rem); line-height:1.75; color:var(--ink-soft); max-width:62ch; font-weight:400; margin-top:20px; }
   .body-text + .body-text{ margin-top:14px; }
+  .body-text-lg{ font-size:clamp(1.05rem,2.2cqw,1.5rem); line-height:1.7; color:var(--ink-soft); max-width:54ch; font-weight:400; margin-top:26px; }
 
   /* ============ LEDGE / NAV ============ */
   .ledge{
@@ -212,118 +181,39 @@
   .kbd-hint{ position:absolute; bottom:14px; right:20px; font-family:var(--font-mono); font-size:.68rem; color:var(--muted); z-index:2; letter-spacing:.05em; }
   @media (max-width:720px){ .kbd-hint{ display:none; } }
 
-  /* ============ SHARED CARD ============ */
-  .card{ background:var(--surface); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); }
-
   /* ============ SLIDE 1 — TITLE ============ */
   .s-title{ text-align:left; }
+  .title-top-row{ display:flex; align-items:center; gap:16px; margin-bottom:14px; }
+  .presenter-avatar{
+    width:clamp(44px,7cqw,60px); height:clamp(44px,7cqw,60px); border-radius:50%; object-fit:cover;
+    border:2px solid var(--accent); box-shadow:var(--shadow); flex:0 0 auto;
+  }
+  .s-title .kicker{ font-family:var(--font-mono); font-size:.75rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
   .s-title .wordmark{
     font-family:var(--font-display); font-style:italic; font-weight:600;
-    font-size:clamp(3rem,9cqw,6.4rem); line-height:.98; letter-spacing:-.01em; margin-bottom:22px;
+    font-size:clamp(2.6rem,8cqw,5.6rem); line-height:.98; letter-spacing:-.01em; margin-bottom:22px;
   }
-  .s-title .wordmark .word-chalk{ color:var(--ink); }
+  .s-title .wordmark .word-a{ color:var(--ink); }
   .s-title .wordmark .amp{ color:var(--muted); font-style:normal; padding:0 .08em; }
-  .s-title .wordmark .word-circuit{ color:var(--accent); }
-  .s-title .topic{ font-size:clamp(1.15rem,2.4cqw,1.55rem); font-weight:500; max-width:20ch; margin-bottom:10px; }
-  .s-title .kicker{ font-family:var(--font-mono); font-size:.75rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:26px; }
-  .begin-hint{ margin-top:44px; display:inline-flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:.78rem; letter-spacing:.08em; color:var(--muted); }
+  .s-title .wordmark .word-b{ color:var(--accent); }
+  .s-title .topic{ font-size:clamp(1.1rem,2.3cqw,1.5rem); font-weight:500; max-width:26ch; margin-bottom:22px; }
+  .presenter-name{ margin-top:4px; font-family:var(--font-mono); font-size:.85rem; letter-spacing:.04em; color:var(--ink-soft); }
+  .begin-hint{ margin-top:36px; display:inline-flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:.78rem; letter-spacing:.08em; color:var(--muted); }
   .begin-hint svg{ width:18px; height:18px; animation:nudge 1.6s ease-in-out infinite; }
   @media (prefers-reduced-motion:reduce){ .begin-hint svg{ animation:none; } }
   @keyframes nudge{ 0%,100%{ transform:translateX(0);} 50%{ transform:translateX(6px);} }
-  .title-underline{ position:relative; display:inline-block; }
+  .title-underline{ position:relative; display:inline-block; align-self:flex-start; }
   .title-underline svg{ position:absolute; left:0; bottom:-8px; width:100%; height:14px; overflow:visible; }
   .title-underline path{ stroke:var(--accent); stroke-width:4; fill:none; stroke-linecap:round; stroke-dasharray:340; stroke-dashoffset:340; animation:draw 1.1s .5s ease-out forwards; }
   @media (prefers-reduced-motion:reduce){ .title-underline path{ animation:none; stroke-dashoffset:0; } }
   @keyframes draw{ to{ stroke-dashoffset:0; } }
 
-  /* ============ SLIDE 2 — COMPARE SLIDER ============ */
-  .compare{
-    position:relative; margin-top:20px; height:min(190px,30cqw); border-radius:18px; overflow:hidden;
-    border:1px solid var(--line); box-shadow:var(--shadow);
-  }
-  .compare-pane{ position:absolute; inset:0; display:flex; flex-direction:column; padding:22px 26px; }
-  .compare-pane .pane-label{ font-family:var(--font-mono); font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; }
-  .compare-pane .pane-title{ font-family:var(--font-display); font-weight:600; font-size:clamp(.95rem,7cqw,1.5rem); line-height:1.15; margin-top:6px; max-width:40%; }
-  .pane-visual{ flex:1; display:flex; align-items:center; justify-content:center; min-height:0; }
-  .pane-visual svg{ width:min(190px,40cqw); height:auto; }
-  .pane-analog{ background:linear-gradient(160deg,#1a181e,#0a090c); color:#ffffff; }
-  .pane-analog .pane-label{ color:rgba(255,255,255,.62); }
-  .pane-analog::after{
-    content:''; position:absolute; inset:0; opacity:.5; pointer-events:none;
-    background-image:
-      radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
-    background-size:5px 5px;
-  }
-  .pane-digital{ background:linear-gradient(160deg,#4a0d33,#2b0a1e); color:#ffffff; }
-  .pane-digital .pane-label{ color:#ff8ac4; }
-  .pane-digital::after{
-    content:''; position:absolute; inset:0; opacity:.35; pointer-events:none;
-    background-image:linear-gradient(rgba(255,138,196,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(255,138,196,.18) 1px, transparent 1px);
-    background-size:26px 26px;
-  }
-
-  /* chalkboard illustration */
-  .chalk-line{ stroke:#ffffff; stroke-width:3; stroke-linecap:round; fill:none; opacity:.9; }
-  .chalk-line{ animation:chalkWrite 6s ease-in-out infinite; }
-  .chalk-line.l1{ stroke-dasharray:120; stroke-dashoffset:120; animation-delay:0s; }
-  .chalk-line.l2{ stroke-dasharray:90; stroke-dashoffset:90; animation-delay:.5s; }
-  .chalk-line.l3{ stroke-dasharray:105; stroke-dashoffset:105; animation-delay:1s; }
-  @keyframes chalkWrite{
-    0%{ stroke-dashoffset:var(--len); opacity:0; }
-    8%{ opacity:.9; }
-    38%{ stroke-dashoffset:0; opacity:.9; }
-    75%{ stroke-dashoffset:0; opacity:.9; }
-    92%{ opacity:0; }
-    100%{ stroke-dashoffset:var(--len); opacity:0; }
-  }
-  .chalk-line.l1{ --len:120; }
-  .chalk-line.l2{ --len:90; }
-  .chalk-line.l3{ --len:105; }
-
-  /* digital wifi illustration */
-  .wifi-arc{ stroke:#ff8ac4; stroke-width:3; stroke-linecap:round; fill:none; opacity:0; transform-box:fill-box; transform-origin:50% 100%; animation:wifiPulse 2.4s ease-in-out infinite; }
-  .wifi-arc.a1{ animation-delay:0s; }
-  .wifi-arc.a2{ animation-delay:.3s; }
-  .wifi-arc.a3{ animation-delay:.6s; }
-  @keyframes wifiPulse{
-    0%{ opacity:0; transform:scale(.9); }
-    35%{ opacity:1; transform:scale(1); }
-    75%{ opacity:1; transform:scale(1); }
-    100%{ opacity:0; transform:scale(1.04); }
-  }
-  .cursor-blink{ animation:blink 1.4s ease-in-out infinite; transform-origin:center; }
-  @media (prefers-reduced-motion:reduce){
-    .chalk-line{ animation:none; opacity:.9; stroke-dashoffset:0; }
-    .wifi-arc{ animation:none; opacity:1; }
-    .cursor-blink{ animation:none; }
-  }
-  .clip-wrap{ position:absolute; inset:0; }
-  .compare-handle-track{ position:absolute; inset:0; z-index:3; }
-  .compare-range{
-    -webkit-appearance:none; appearance:none; position:absolute; inset:0; width:100%; height:100%;
-    margin:0; background:transparent; cursor:ew-resize;
-  }
-  .compare-range::-webkit-slider-runnable-track{ background:transparent; height:100%; }
-  .compare-range::-moz-range-track{ background:transparent; height:100%; }
-  .compare-range::-webkit-slider-thumb{
-    -webkit-appearance:none; width:6px; height:100%; border-radius:0; background:transparent; cursor:ew-resize;
-  }
-  .compare-range::-moz-range-thumb{ width:6px; height:9999px; border:none; background:transparent; cursor:ew-resize; }
-  .compare-divider{
-    position:absolute; top:0; bottom:0; width:0; z-index:2; pointer-events:none;
-    border-left:2px solid var(--surface);
-  }
-  .compare-grip{
-    position:absolute; top:50%; left:0; width:38px; height:38px; border-radius:50%; background:var(--surface);
-    transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,0,0,.3);
-    pointer-events:none; color:var(--ink);
-  }
-  .compare-grip svg{ width:16px; height:16px; }
-  .compare-caption{ margin-top:14px; font-family:var(--font-mono); font-size:.72rem; letter-spacing:.05em; color:var(--muted); text-align:center; }
+  /* ============ SLIDE 2 — DEFINITION ============ */
+  .s-define .headline{ max-width:14ch; }
 
   /* ============ SLIDE 3 — FLIP CARDS ============ */
   .flip-row{ display:flex; gap:26px; margin-top:34px; flex-wrap:wrap; }
-  .flip-card{ perspective:1400px; width:min(320px,100%); height:230px; }
+  .flip-card{ perspective:1400px; width:min(300px,100%); height:220px; }
   .flip-card button{
     all:unset; display:block; width:100%; height:100%; cursor:pointer; position:relative;
     transform-style:preserve-3d; transition:transform .6s cubic-bezier(.65,0,.24,1);
@@ -331,24 +221,25 @@
   @media (prefers-reduced-motion:reduce){ .flip-card button{ transition:none; } }
   .flip-card button[aria-pressed="true"]{ transform:rotateY(180deg); }
   .flip-face{
-    position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; padding:26px;
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; padding:24px;
     display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow);
   }
   .flip-front{ background:var(--surface); border:1px solid var(--line); }
   .flip-back{ transform:rotateY(180deg); color:#ffffff; }
-  .flip-card.analog .flip-back{ background:linear-gradient(160deg,#1a181e,#0a090c); }
-  .flip-card.digital .flip-back{ background:linear-gradient(160deg,#4a0d33,#2b0a1e); }
-  .flip-face .tag{ font-family:var(--font-mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; }
-  .flip-card.analog .flip-front .tag{ color:var(--ink); }
-  .flip-card.digital .flip-front .tag{ color:var(--accent); }
-  .flip-card.analog .flip-back .tag{ color:#ffffff; }
-  .flip-card.digital .flip-back .tag{ color:#ff6fb8; }
-  .flip-face h3{ font-size:1.5rem; }
+  .flip-card.v1 .flip-back{ background:linear-gradient(160deg,#3a3fae,#201f52); }
+  .flip-card.v2 .flip-back{ background:linear-gradient(160deg,#8a5c00,#4a3000); }
+  .flip-card.v3 .flip-back{ background:linear-gradient(160deg,#0a6b62,#043834); }
+  .flip-face .tag{ font-family:var(--font-mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; }
+  .flip-card.v1 .flip-front .tag{ color:var(--accent); }
+  .flip-card.v2 .flip-front .tag{ color:var(--gold); }
+  .flip-card.v3 .flip-front .tag{ color:#0a8b7e; }
+  .flip-face .tag.on-dark{ color:#ffffffcc; }
+  .flip-face h3{ font-size:1.32rem; }
   .flip-face .hint{ font-size:.76rem; color:var(--muted); font-family:var(--font-mono); }
+  .flip-back .hint{ color:#ffffff99; }
   .flip-back p{ font-size:.92rem; line-height:1.6; }
-  .flip-note{ margin-top:26px; font-size:.95rem; color:var(--ink-soft); max-width:60ch; font-style:italic; font-family:var(--font-display); }
 
-  /* ============ ROLE SLIDES (chips / gallery / pace / toggle) ============ */
+  /* ============ SLIDE 4 — CHIPS ============ */
   .chip-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:28px; }
   .chip{
     font-family:var(--font-mono); font-size:.78rem; letter-spacing:.03em; padding:10px 16px; border-radius:100px;
@@ -356,106 +247,52 @@
     transition:border-color .2s, color .2s, background .2s;
   }
   .chip:hover{ border-color:var(--accent); color:var(--accent); }
-  .chip[aria-pressed="true"]{ background:var(--accent); border-color:var(--accent); color:#04211f; }
+  .chip[aria-pressed="true"]{ background:var(--accent); border-color:var(--accent); color:#ffffff; }
   .chip-detail{
     margin-top:18px; min-height:2.6em; font-size:.98rem; color:var(--ink-soft); max-width:58ch;
     padding-left:16px; border-left:2px solid var(--accent);
   }
 
-  .gallery{ display:flex; gap:20px; margin-top:32px; flex-wrap:wrap; }
-  .gallery-item{
-    width:150px; padding:20px 16px; border-radius:14px; background:var(--surface); border:1px solid var(--line);
-    display:flex; flex-direction:column; align-items:flex-start; gap:12px;
-    opacity:0; transform:translateY(14px); animation:rise .5s ease forwards;
+  /* ============ SLIDE 5 — SCAMPER WHEEL ============ */
+  .scamper-wrap{ display:flex; gap:clamp(24px,5cqw,56px); align-items:center; margin-top:30px; }
+  .scamper-wheel{ position:relative; width:clamp(220px,32cqw,300px); aspect-ratio:1; margin:0 auto; flex:0 0 auto; }
+  .scamper-hub{
+    position:absolute; inset:27%; border-radius:50%; background:var(--surface); border:1px solid var(--line);
+    box-shadow:var(--shadow); display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:6%;
   }
-  @media (prefers-reduced-motion:reduce){ .gallery-item{ animation:none; opacity:1; transform:none; } }
-  .gallery-item:nth-child(1){ animation-delay:.05s; } .gallery-item:nth-child(2){ animation-delay:.15s; }
-  .gallery-item:nth-child(3){ animation-delay:.25s; } .gallery-item:nth-child(4){ animation-delay:.35s; }
-  @keyframes rise{ to{ opacity:1; transform:none; } }
-  .gallery-item svg{ width:26px; height:26px; stroke:var(--accent); }
-  .gallery-item span{ font-size:.86rem; color:var(--ink-soft); }
-
-  .pace-wrap{ margin-top:30px; max-width:560px; }
-  .pace-track{ position:relative; }
-  .pace-range{ width:100%; accent-color:var(--accent); height:6px; cursor:pointer; }
-  .pace-labels{ display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:8px; }
-  .pace-result{ margin-top:20px; padding:18px 20px; border-radius:14px; background:var(--accent-soft); border:1px solid var(--accent); font-size:.98rem; min-height:1.5em; }
-  .pace-result strong{ color:var(--accent); }
-
-  .toggle-wrap{ margin-top:34px; display:flex; flex-direction:column; gap:20px; max-width:560px; }
-  .toggle{ position:relative; display:flex; width:220px; background:var(--surface-2); border-radius:100px; padding:4px; border:1px solid var(--line); }
-  .toggle button{
-    all:unset; flex:1; text-align:center; padding:9px 0; font-family:var(--font-mono); font-size:.75rem; letter-spacing:.08em;
-    border-radius:100px; cursor:pointer; position:relative; z-index:1; color:var(--muted);
+  .hub-letter{ font-family:var(--font-display); font-weight:600; font-size:clamp(1.3rem,4.6cqw,2rem); color:var(--accent); line-height:1; }
+  .hub-hint{ font-family:var(--font-mono); font-size:.58rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-top:6px; }
+  .scamper-node{
+    all:unset; box-sizing:border-box; position:absolute; top:50%; left:50%;
+    width:clamp(38px,10cqw,54px); height:clamp(38px,10cqw,54px);
+    margin-top:clamp(-27px,-5cqw,-19px); margin-left:clamp(-27px,-5cqw,-19px);
+    border-radius:50%; background:var(--surface-2); border:1px solid var(--line); color:var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:600; font-size:clamp(.92rem,2.6cqw,1.15rem);
+    cursor:pointer; transition:background .2s, color .2s;
+    transform: rotate(calc(360deg / 7 * var(--i))) translate(0, clamp(-98px,-17cqw,-138px)) rotate(calc(-360deg / 7 * var(--i)));
   }
-  .toggle button[aria-pressed="true"]{ color:var(--surface); }
-  .toggle-thumb{ position:absolute; top:4px; bottom:4px; left:4px; width:calc(50% - 4px); border-radius:100px; background:var(--ink); transition:transform .35s cubic-bezier(.65,0,.24,1), background .35s; }
-  .toggle-thumb.on{ transform:translateX(100%); background:var(--accent); }
-  @media (prefers-reduced-motion:reduce){ .toggle-thumb{ transition:none; } }
-  .role-result{ padding:20px 22px; border-radius:14px; border:1px solid var(--line); background:var(--surface); }
-  .role-result .rr-tag{ font-family:var(--font-mono); font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; }
-  .role-result .rr-title{ font-family:var(--font-display); font-size:1.3rem; font-weight:600; margin-top:6px; }
-  .role-result .rr-body{ font-size:.92rem; color:var(--ink-soft); margin-top:8px; line-height:1.6; }
-
-  /* ============ CHALLENGES ============ */
-  .challenge-list{ margin-top:30px; display:flex; flex-direction:column; gap:10px; max-width:640px; }
-  .challenge{ border:1px solid var(--line); border-radius:14px; background:var(--surface); overflow:hidden; }
-  .challenge summary{
-    list-style:none; cursor:pointer; padding:18px 20px; display:flex; align-items:center; justify-content:space-between; gap:14px;
-    font-weight:500; font-size:1rem;
+  .scamper-node:hover{ background:var(--accent-soft); color:var(--accent); }
+  .scamper-node[aria-pressed="true"]{ background:var(--accent); color:#ffffff; }
+  .scamper-detail{ flex:1; min-width:0; }
+  .sd-title{ font-family:var(--font-display); font-weight:600; font-size:clamp(1.1rem,2.8cqw,1.5rem); color:var(--ink); }
+  .sd-body{ margin-top:12px; font-size:.98rem; line-height:1.7; color:var(--ink-soft); max-width:50ch; }
+  @container (max-width:640px){
+    .scamper-wrap{ flex-direction:column; }
   }
-  .challenge summary::-webkit-details-marker{ display:none; }
-  .challenge .num{ font-family:var(--font-mono); color:var(--ink); font-size:.85rem; margin-right:12px; }
-  .challenge .chev{ width:16px; height:16px; flex-shrink:0; transition:transform .3s; color:var(--muted); }
-  .challenge[open] .chev{ transform:rotate(180deg); }
-  .challenge-body{ padding:0 20px 18px 52px; font-size:.94rem; color:var(--ink-soft); line-height:1.65; }
-  @media (prefers-reduced-motion:reduce){ .challenge .chev{ transition:none; } }
-
-  /* ============ MEME BREAK ============ */
-  .meme-card{
-    margin-top:0; width:100%; max-width:300px; border-radius:14px; overflow:hidden;
-    border:1px solid var(--line); background:#000; box-shadow:var(--shadow);
-    container-type:inline-size;
-  }
-  .meme-img-wrap{ position:relative; line-height:0; }
-  .meme-img-wrap img{ width:100%; display:block; }
-
-  /* classic impact-style overlay caption, for photo-based templates */
-  .meme-cap{
-    position:absolute; left:4%; right:4%; text-align:center;
-    font-family:var(--font-meme); font-weight:400; text-transform:uppercase;
-    color:#ffffff; letter-spacing:.01em; line-height:1.12;
-    font-size:clamp(.95rem,7.5cqw,1.6rem);
-    text-shadow:2px 0 0 #000,-2px 0 0 #000,0 2px 0 #000,0 -2px 0 #000,2px 2px 0 #000,-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000;
-  }
-  .meme-cap.top{ top:4%; }
-  .meme-cap.bottom{ bottom:4%; }
-
-  /* caption sitting inside a template's own blank white margin — dark text, no outline */
-  .meme-cap.on-light{
-    color:#161616; text-shadow:none; text-transform:none; letter-spacing:0;
-    font-family:var(--font-body); font-weight:700; line-height:1.28;
-    font-size:clamp(.82rem,6.4cqw,1.08rem);
-  }
-
-  /* Drake-style caption, sitting in the template's own blank margin */
-  .drake-cap{
-    position:absolute; right:4%; width:46%; display:flex; align-items:center;
-    font-family:var(--font-body); font-weight:700; color:#191919;
-    font-size:clamp(.72rem,4.6cqw,1.05rem); line-height:1.3;
-  }
-  .drake-cap.top{ top:2%; height:46%; }
-  .drake-cap.bottom{ top:52%; height:46%; }
 
   /* ============ CONCLUSION ============ */
   .s-conclusion .headline{ max-width:18ch; }
-  .thank-you{ font-family:var(--font-display); font-style:italic; font-weight:600; font-size:clamp(2.2rem,6cqw,3.6rem); margin-top:38px; }
-  .replay-hint{ margin-top:20px; font-family:var(--font-mono); font-size:.75rem; color:var(--muted); }
+  .verse-card{ margin-top:26px; padding:20px 24px; border-radius:16px; background:var(--surface-2); border:1px solid var(--line); max-width:60ch; }
+  .verse-ref{ font-family:var(--font-mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .verse-text{ font-family:var(--font-display); font-style:italic; font-size:clamp(1rem,2cqw,1.18rem); line-height:1.6; color:var(--ink-soft); }
+  .thank-you{ font-family:var(--font-display); font-style:italic; font-weight:600; font-size:clamp(1.9rem,5cqw,3rem); margin-top:30px; }
+  .replay-hint{ margin-top:18px; font-family:var(--font-mono); font-size:.75rem; color:var(--muted); }
 
   /* ============ RESPONSIVE ============ */
   @media (max-width:640px){
     .flip-row{ justify-content:center; }
-    .compare{ height:280px; }
   }
 </style>
 </head>
@@ -466,8 +303,8 @@
 <div class="stage">
 <div class="app">
   <header class="topbar">
-    <span class="brand"><span class="word-chalk">Chalk</span><span class="amp">&amp;</span><span class="word-circuit">Circuit</span></span>
-    <span class="counter" id="counter">01 / 09</span>
+    <span class="brand"><span class="word-a">Digital</span><span class="amp">&amp;</span><span class="word-b">Pedagogy</span></span>
+    <span class="counter" id="counter">01 / 06</span>
   </header>
 
   <main class="viewport">
@@ -476,302 +313,139 @@
       <!-- SLIDE 1 — TITLE -->
       <section class="slide" data-title="Title">
         <div class="slide-inner s-title">
-          <div class="kicker">An oral presentation</div>
-          <div class="wordmark"><span class="word-chalk">Chalk</span><span class="amp">&amp;</span><span class="word-circuit">Circuit</span></div>
+          <div class="title-top-row">
+            <img class="presenter-avatar" src="assets/presenter.png" alt="Jeah Jane Mae R. Baisac">
+            <div class="kicker">MST Science — 1B &middot; Final Report</div>
+          </div>
+          <div class="wordmark"><span class="word-a">Digital</span><span class="amp">&amp;</span><span class="word-b">Pedagogy</span></div>
           <p class="topic title-underline">The Role of Digital Technology in Transforming <em>Creative Pedagogy</em>
             <svg viewBox="0 0 300 14" preserveAspectRatio="none"><path d="M2 8 C 80 2, 220 12, 298 6"/></svg>
           </p>
+          <div class="presenter-name">Jeah Jane Mae R. Baisac</div>
           <span class="begin-hint">Press <strong>&rarr;</strong> or click below to begin
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </span>
         </div>
       </section>
 
-      <!-- SLIDE 2 — HOOK QUESTION -->
-      <section class="slide" data-title="Opening Question">
-        <div class="slide-inner split-stack">
-          <div class="split-top">
-          <div class="split-left">
-          <div class="eyebrow">Opening Question</div>
-          <h1 class="headline">How has technology changed the way we learn today?</h1>
-          <p class="body-text">Unlike before, learning is no longer limited to books, classrooms, and traditional lectures. With digital technology, students can access information anytime, collaborate with others, and create new ways of showing what they know.</p>
-          </div>
-          <div class="split-right">
-
-          <div class="meme-card">
-            <div class="meme-img-wrap">
-              <img src="https://i.imgflip.com/30b1gx.jpg" alt="Drake reaction meme: rejecting one option, approving another" loading="lazy">
-              <div class="drake-cap top">Learning only from a textbook</div>
-              <div class="drake-cap bottom">Learning from videos, sims, and AI</div>
-            </div>
-          </div>
-
-          </div>
-          </div>
-
-          <div class="split-bottom">
-          <div class="compare" id="compare">
-            <div class="compare-pane pane-analog">
-              <div>
-                <div class="pane-label">Before</div>
-                <div class="pane-title">Traditional Classroom</div>
-              </div>
-              <div class="pane-visual" aria-hidden="true">
-                <svg viewBox="0 0 200 160">
-                  <rect x="12" y="12" width="176" height="118" rx="6" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="3"/>
-                  <path class="chalk-line l1" d="M32 46 H152"/>
-                  <path class="chalk-line l2" d="M32 76 H122"/>
-                  <path class="chalk-line l3" d="M32 106 H142"/>
-                </svg>
-              </div>
-            </div>
-            <div class="clip-wrap" id="digitalClip">
-              <div class="compare-pane pane-digital">
-                <div>
-                  <div class="pane-label">Now</div>
-                  <div class="pane-title">Digital Classroom</div>
-                </div>
-                <div class="pane-visual" aria-hidden="true">
-                  <svg viewBox="0 0 200 160">
-                    <path class="wifi-arc a1" d="M85 78 a20 20 0 0 1 30 0"/>
-                    <path class="wifi-arc a2" d="M73 68 a37 37 0 0 1 54 0"/>
-                    <path class="wifi-arc a3" d="M61 58 a54 54 0 0 1 78 0"/>
-                    <circle cx="100" cy="86" r="3.5" fill="#ff8ac4"/>
-                    <rect x="55" y="100" width="90" height="52" rx="4" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="3"/>
-                    <rect x="65" y="110" width="70" height="32" rx="2" fill="rgba(255,138,196,.1)"/>
-                    <rect class="cursor-blink" x="72" y="118" width="3" height="10" fill="#ff8ac4"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="compare-divider" id="divider">
-              <div class="compare-grip">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/></svg>
-              </div>
-            </div>
-            <input type="range" class="compare-range" id="compareRange" min="0" max="100" value="50" aria-label="Drag to compare the traditional and digital classroom">
-          </div>
-          <p class="compare-caption">Drag the divider — or use arrow keys when focused</p>
-
-          </div>
+      <!-- SLIDE 2 — DEFINITION -->
+      <section class="slide" data-title="Digital Technology">
+        <div class="slide-inner s-define">
+          <div class="eyebrow">Key Definition</div>
+          <h1 class="headline">Digital <em>Technology</em></h1>
+          <p class="body-text-lg">Refers to the use of digital tools — computers, smartphones, online platforms, artificial intelligence, and other technologies — that help people access and share information.</p>
         </div>
       </section>
 
-      <!-- SLIDE 3 — DEFINITIONS -->
-      <section class="slide" data-title="Key Terms">
+      <!-- SLIDE 3 — THREE DOMAINS (FLIP CARDS) -->
+      <section class="slide" data-title="Three Domains">
         <div class="slide-inner">
-          <div class="eyebrow">Key Terms</div>
-          <h1 class="headline">Two ideas, one classroom</h1>
+          <div class="eyebrow">Framework &mdash; Lazar Stosic (2015)</div>
+          <h1 class="headline">Three <em>domains</em> of technology in education</h1>
+          <p class="body-text">What are the significant roles digital technology plays in the creative education landscape? Stosic identifies three lenses for understanding its function in the classroom.</p>
 
           <div class="flip-row">
-            <div class="flip-card digital">
+            <div class="flip-card v1">
               <button type="button" aria-pressed="false" data-flip>
                 <div class="flip-face flip-front">
-                  <span class="tag">Term 01</span>
-                  <h3>Digital Technology</h3>
+                  <span class="tag">Domain 01</span>
+                  <h3>Technology as a Tutor</h3>
                   <span class="hint">Click to reveal &rarr;</span>
                 </div>
                 <div class="flip-face flip-back">
-                  <span class="tag">Definition</span>
-                  <p>The use of digital tools — computers, smartphones, online platforms, and artificial intelligence — that help people access and share information.</p>
-                  <span class="hint" style="color:#ffffff99">Click to flip back</span>
+                  <span class="tag on-dark">Definition</span>
+                  <p>Technology acts as an independent instructor or supports a teacher by delivering educational content directly.</p>
+                  <span class="hint">Click to flip back</span>
                 </div>
               </button>
             </div>
-            <div class="flip-card analog">
+            <div class="flip-card v2">
               <button type="button" aria-pressed="false" data-flip>
                 <div class="flip-face flip-front">
-                  <span class="tag">Term 02</span>
-                  <h3>Creative Pedagogy</h3>
+                  <span class="tag">Domain 02</span>
+                  <h3>Technology as a Teaching Tool</h3>
                   <span class="hint">Click to reveal &rarr;</span>
                 </div>
                 <div class="flip-face flip-back">
-                  <span class="tag">Definition</span>
-                  <p>A teaching approach that encourages students to think creatively, solve problems, explore ideas, and actively participate in learning.</p>
-                  <span class="hint" style="color:#ffffff99">Click to flip back</span>
+                  <span class="tag on-dark">Definition</span>
+                  <p>Technology serves as an instrument to assist and lighten the workload of human teachers.</p>
+                  <span class="hint">Click to flip back</span>
+                </div>
+              </button>
+            </div>
+            <div class="flip-card v3">
+              <button type="button" aria-pressed="false" data-flip>
+                <div class="flip-face flip-front">
+                  <span class="tag">Domain 03</span>
+                  <h3>Technology as a Learning Tool</h3>
+                  <span class="hint">Click to reveal &rarr;</span>
+                </div>
+                <div class="flip-face flip-back">
+                  <span class="tag on-dark">Definition</span>
+                  <p>Technology functions as a medium that makes the actual learning process easier, more engaging, and effective for students.</p>
+                  <span class="hint">Click to flip back</span>
                 </div>
               </button>
             </div>
           </div>
-          <p class="flip-note">"Combined, technology becomes more than a tool — it becomes a way to create better learning experiences."</p>
         </div>
       </section>
 
-      <!-- SLIDE 4 — ROLE 1: INTERACTIVE -->
-      <section class="slide" data-title="Role 1">
-        <div class="slide-inner split">
-          <div class="split-left">
-          <div class="eyebrow">Role 01 &mdash; Engagement</div>
-          <h1 class="headline">Makes learning more <em>interactive</em></h1>
-          <p class="body-text">Instead of only listening to lectures, students learn through videos, simulations, online activities, and interactive platforms — experiencing difficult concepts in a more visual, practical way.</p>
+      <!-- SLIDE 4 — CATEGORIES OF KNOWLEDGE (CHIPS) -->
+      <section class="slide" data-title="Categories of Knowledge">
+        <div class="slide-inner">
+          <div class="eyebrow">Framework &mdash; Egbert (2009)</div>
+          <h1 class="headline">How important is technology <em>in pedagogy</em>?</h1>
+          <p class="body-text">Egbert frames classroom knowledge into three categories — each shaped differently by how technology is used to teach it.</p>
 
-          <div class="chip-row" id="formatChips">
-            <button class="chip" data-detail="A short clip can demonstrate a process in minutes that a paragraph struggles to explain.">Video</button>
-            <button class="chip" data-detail="Students test cause and effect safely — running the experiment as many times as it takes to understand it.">Simulation</button>
-            <button class="chip" data-detail="Polls, quizzes, and discussion boards turn a one-way lecture into a two-way conversation.">Online Activity</button>
-            <button class="chip" data-detail="Shared boards and live documents let a whole class build one idea together, in real time.">Interactive Platform</button>
+          <div class="chip-row" id="knowledgeChips">
+            <button class="chip" data-detail="Discrete pieces of information answering what, who, when, and where — often learned through memorization or drills.">Declarative Knowledge</button>
+            <button class="chip" data-detail="Facts or declarative pieces put together to build meaning — often shown via concept maps.">Structural Knowledge</button>
+            <button class="chip" data-detail="Knowledge in action, or knowing how to do something — shown through a performance task.">Procedural Knowledge</button>
           </div>
-          <p class="chip-detail" id="formatDetail">Click a format above to see how it changes the lesson.</p>
-          </div>
-          <div class="split-right">
-
-          <div class="meme-card">
-            <div class="meme-img-wrap">
-              <img src="https://i.imgflip.com/2kbn1e.jpg" alt="Surprised Pikachu meme" loading="lazy">
-              <div class="meme-cap on-light top">When the simulation actually makes it click</div>
-            </div>
-          </div>
-
-          </div>
+          <p class="chip-detail" id="knowledgeDetail">Click a category above to see how it's defined.</p>
         </div>
       </section>
 
-      <!-- SLIDE 5 — ROLE 2: CREATIVITY -->
-      <section class="slide" data-title="Role 2">
-        <div class="slide-inner split">
-          <div class="split-left">
-          <div class="eyebrow">Role 02 &mdash; Expression</div>
-          <h1 class="headline">Encourages <em>creativity</em></h1>
-          <p class="body-text">Technology gives students more ways to express their ideas. Instead of only writing assignments, they can create videos, presentations, digital artworks, podcasts, and other multimedia projects — using their imagination to develop creativity.</p>
+      <!-- SLIDE 5 — SCAMPER WHEEL -->
+      <section class="slide" data-title="Seven Creative Strategies">
+        <div class="slide-inner">
+          <div class="eyebrow">Framework &mdash; Osborn (1963)</div>
+          <h1 class="headline">Seven creative strategies &mdash; <em>SCAMPER</em></h1>
+          <p class="body-text">A checklist for creative thinking in lesson design. Click a letter to see how it reshapes a lesson.</p>
 
-          <div class="gallery" aria-label="Ways students can express ideas">
-            <div class="gallery-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="M17 10l5-3v10l-5-3"/></svg><span>Video Projects</span></div>
-            <div class="gallery-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8a2 2 0 1 0 2 2c0-2 2-2 2-4a4 4 0 1 0-4 4"/></svg><span>Digital Artwork</span></div>
-            <div class="gallery-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M9 22h6"/></svg><span>Podcasts</span></div>
-            <div class="gallery-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg><span>Presentations</span></div>
-          </div>
-          </div>
-          <div class="split-right">
-
-          <div class="meme-card">
-            <div class="meme-img-wrap">
-              <img src="https://i.imgflip.com/1ur9b0.jpg" alt="Distracted boyfriend meme" loading="lazy">
-              <div class="meme-cap bottom">A "written report" becomes a video essay</div>
+          <div class="scamper-wrap">
+            <div class="scamper-wheel" id="scamperWheel">
+              <div class="scamper-hub">
+                <span class="hub-letter" id="hubLetter">?</span>
+                <span class="hub-hint" id="hubHint">Tap a letter</span>
+              </div>
+              <button type="button" class="scamper-node" data-key="substitute" style="--i:0" aria-pressed="false">S</button>
+              <button type="button" class="scamper-node" data-key="combine" style="--i:1" aria-pressed="false">C</button>
+              <button type="button" class="scamper-node" data-key="adapt" style="--i:2" aria-pressed="false">A</button>
+              <button type="button" class="scamper-node" data-key="modify" style="--i:3" aria-pressed="false">M</button>
+              <button type="button" class="scamper-node" data-key="put" style="--i:4" aria-pressed="false">P</button>
+              <button type="button" class="scamper-node" data-key="eliminate" style="--i:5" aria-pressed="false">E</button>
+              <button type="button" class="scamper-node" data-key="reverse" style="--i:6" aria-pressed="false">R</button>
             </div>
-          </div>
-
+            <div class="scamper-detail">
+              <div class="sd-title" id="sdTitle">Choose a strategy</div>
+              <p class="sd-body" id="sdBody">Each letter stands for a different way to reshape an existing lesson, tool, or activity into something new.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- SLIDE 6 — ROLE 3: PERSONALIZED -->
-      <section class="slide" data-title="Role 3">
-        <div class="slide-inner split-stack">
-          <div class="split-top">
-          <div class="split-left">
-          <div class="eyebrow">Role 03 &mdash; Flexibility</div>
-          <h1 class="headline">Supports <em>personalized</em> learning</h1>
-          <p class="body-text">Every student learns differently. Digital tools help students learn at their own pace by providing additional resources, feedback, and activities based on their needs — making education more flexible and inclusive.</p>
-          </div>
-          <div class="split-right">
-
-          <div class="meme-card">
-            <div class="meme-img-wrap">
-              <img src="https://i.imgflip.com/1g8my4.jpg" alt="Sweating man deciding between two buttons meme" loading="lazy">
-              <div class="meme-cap bottom">Deciding your learning path in real time</div>
-            </div>
-          </div>
-
-          </div>
-          </div>
-
-          <div class="split-bottom">
-          <div class="pace-wrap">
-            <div class="pace-track">
-              <input type="range" class="pace-range" id="paceRange" min="0" max="100" value="50" aria-label="Adjust learning pace to see how the lesson adapts">
-              <div class="pace-labels"><span>Needs more time</span><span>Ready to advance</span></div>
-            </div>
-            <div class="pace-result" id="paceResult"><strong>At an even pace:</strong> the lesson offers a balanced mix of guided examples and independent practice.</div>
-          </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SLIDE 7 — ROLE 4: TEACHER -->
-      <section class="slide" data-title="Role 4">
-        <div class="slide-inner split-stack">
-          <div class="split-top">
-          <div class="split-left">
-          <div class="eyebrow">Role 04 &mdash; The Educator</div>
-          <h1 class="headline">Changes the role of <em>teachers</em></h1>
-          <p class="body-text">Technology does not replace teachers. It shifts their role from being the only source of information into guides and facilitators of learning — helping students analyze information, think critically, and use technology responsibly.</p>
-          </div>
-          <div class="split-right">
-
-          <div class="meme-card">
-            <div class="meme-img-wrap">
-              <img src="https://i.imgflip.com/24y43o.jpg" alt="Change my mind meme" loading="lazy">
-              <div class="meme-cap top">Teachers didn't get replaced</div>
-            </div>
-          </div>
-
-          </div>
-          </div>
-
-          <div class="split-bottom">
-          <div class="toggle-wrap">
-            <div class="toggle" id="roleToggle">
-              <div class="toggle-thumb" id="roleThumb"></div>
-              <button type="button" aria-pressed="true" data-role="then">Then</button>
-              <button type="button" aria-pressed="false" data-role="now">Now</button>
-            </div>
-            <div class="role-result" id="roleResult">
-              <div class="rr-tag" style="color:var(--ink)">Then</div>
-              <div class="rr-title">The Sole Source of Information</div>
-              <p class="rr-body">Students learned mainly by receiving facts directly from the teacher, who held most of the knowledge in the room.</p>
-            </div>
-          </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SLIDE 8 — CHALLENGES -->
-      <section class="slide" data-title="Challenges">
-        <div class="slide-inner split-stack">
-          <div class="split-top">
-          <div class="split-left">
-          <div class="eyebrow analog">The Other Side</div>
-          <h1 class="headline">Real benefits, real <em style="color:var(--ink)">challenges</em></h1>
-          <p class="body-text">Although technology provides many benefits, it also comes with real challenges that teachers and schools have to plan for.</p>
-          </div>
-          <div class="split-right">
-
-          <div class="meme-card">
-            <div class="meme-img-wrap">
-              <img src="https://i.imgflip.com/wxica.jpg" alt="This is fine dog sitting in a burning room meme" loading="lazy">
-              <div class="meme-cap bottom">When the wifi drops mid-lesson</div>
-            </div>
-          </div>
-
-          </div>
-          </div>
-
-          <div class="split-bottom">
-          <div class="challenge-list">
-            <details class="challenge">
-              <summary><span><span class="num">01</span>The Digital Divide</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></summary>
-              <div class="challenge-body">Some students may not have equal access to devices and internet connections, which can widen the gap between them and their peers.</div>
-            </details>
-            <details class="challenge">
-              <summary><span><span class="num">02</span>Overdependence on Technology</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></summary>
-              <div class="challenge-body">Students may rely too much on digital tools instead of developing their own thinking and problem-solving skills.</div>
-            </details>
-            <details class="challenge">
-              <summary><span><span class="num">03</span>Teacher Training</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></summary>
-              <div class="challenge-body">Teachers need proper training to use technology effectively — without it, digital tools can add confusion instead of value.</div>
-            </details>
-          </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SLIDE 9 — CONCLUSION -->
+      <!-- SLIDE 6 — CONCLUSION -->
       <section class="slide" data-title="Conclusion">
         <div class="slide-inner s-conclusion">
-          <div class="eyebrow">In Conclusion</div>
-          <h1 class="headline">Technology should <em>improve</em> learning — not replace it</h1>
-          <p class="body-text">Digital technology plays an important role in transforming creative pedagogy. It makes learning more interactive, encourages creativity, supports different learning needs, and helps students develop skills for the modern world.</p>
-          <p class="body-text">But technology itself is not the solution — the real impact happens when teachers and students use it with purpose and responsibility. The goal is not to replace traditional learning, but to improve it and create a more meaningful learning experience.</p>
+          <div class="eyebrow">In Closing</div>
+          <h1 class="headline">Technology should <em>serve</em> the purpose behind the lesson</h1>
+          <p class="body-text">Across each framework — Stosic's three domains, Egbert's categories of knowledge, and Osborn's creative strategies — the common thread is the same: technology works best when it is chosen with intention, not used for its own sake.</p>
+          <div class="verse-card">
+            <div class="verse-ref">Romans 8:28</div>
+            <p class="verse-text">"And we know that in all things God works for the good of those who love Him, who have been called according to His purpose."</p>
+          </div>
           <div class="thank-you title-underline">Thank you.
             <svg viewBox="0 0 220 14" preserveAspectRatio="none"><path d="M2 8 C 60 2, 160 12, 218 6"/></svg>
           </div>
@@ -787,7 +461,7 @@
     <div class="dots" id="dots" role="tablist" aria-label="Slides"></div>
     <button class="nav-btn" id="nextBtn" aria-label="Next slide">&rsaquo;</button>
   </nav>
-  <div class="kbd-hint">&larr; &rarr; to navigate &middot; drag sliders to interact</div>
+  <div class="kbd-hint">&larr; &rarr; to navigate &middot; click cards &amp; letters to interact</div>
 </div>
 </div>
 
@@ -841,7 +515,6 @@
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(fitAllSlides);
   }
-  // meme images load async from an external host — refit once each one settles
   var imgs = document.querySelectorAll('.slide img');
   var pending = imgs.length;
   if (pending === 0) { fitAllSlides(); }
@@ -873,7 +546,7 @@
   document.addEventListener('keydown', function(e){
     var tag = (e.target && e.target.tagName) || '';
     if (tag === 'INPUT') {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') return; // let range input handle its own arrows
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') return;
     }
     if (e.key === 'ArrowRight' || e.key === ' ') { goTo(index + 1); e.preventDefault(); }
     else if (e.key === 'ArrowLeft') { goTo(index - 1); e.preventDefault(); }
@@ -881,7 +554,6 @@
     else if (e.key === 'End') { goTo(total - 1); e.preventDefault(); }
   });
 
-  // touch swipe
   var touchX = null;
   track.addEventListener('touchstart', function(e){ touchX = e.touches[0].clientX; }, {passive:true});
   track.addEventListener('touchend', function(e){
@@ -895,17 +567,6 @@
   fitAllSlides();
   setTimeout(fitAllSlides, 60);
 
-  /* ---- Slide 2: compare slider ---- */
-  var compareRange = document.getElementById('compareRange');
-  var digitalClip = document.getElementById('digitalClip');
-  var divider = document.getElementById('divider');
-  function setCompare(v){
-    digitalClip.style.clipPath = 'inset(0 0 0 ' + v + '%)';
-    divider.style.left = v + '%';
-  }
-  compareRange.addEventListener('input', function(){ setCompare(this.value); });
-  setCompare(50);
-
   /* ---- Slide 3: flip cards ---- */
   document.querySelectorAll('[data-flip]').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -914,44 +575,40 @@
     });
   });
 
-  /* ---- Slide 4: format chips ---- */
-  var chipDetail = document.getElementById('formatDetail');
-  document.querySelectorAll('#formatChips .chip').forEach(function(chip){
+  /* ---- Slide 4: knowledge chips ---- */
+  var knowledgeDetail = document.getElementById('knowledgeDetail');
+  document.querySelectorAll('#knowledgeChips .chip').forEach(function(chip){
     chip.addEventListener('click', function(){
-      document.querySelectorAll('#formatChips .chip').forEach(function(c){ c.setAttribute('aria-pressed','false'); });
+      document.querySelectorAll('#knowledgeChips .chip').forEach(function(c){ c.setAttribute('aria-pressed','false'); });
       chip.setAttribute('aria-pressed','true');
-      chipDetail.textContent = chip.getAttribute('data-detail');
+      knowledgeDetail.textContent = chip.getAttribute('data-detail');
       fitCurrent();
     });
   });
 
-  /* ---- Slide 6: pace slider ---- */
-  var paceRange = document.getElementById('paceRange');
-  var paceResult = document.getElementById('paceResult');
-  function setPace(v){
-    v = Number(v);
-    if (v < 33) paceResult.innerHTML = '<strong>More time needed:</strong> the lesson offers extra worked examples and step-by-step practice before moving on.';
-    else if (v > 66) paceResult.innerHTML = '<strong>Ready to advance:</strong> a challenge activity unlocks, extending the lesson beyond the standard pace.';
-    else paceResult.innerHTML = '<strong>At an even pace:</strong> the lesson offers a balanced mix of guided examples and independent practice.';
-    fitCurrent();
-  }
-  paceRange.addEventListener('input', function(){ setPace(this.value); });
-  setPace(50);
-
-  /* ---- Slide 7: then/now toggle ---- */
-  var thumb = document.getElementById('roleThumb');
-  var roleResult = document.getElementById('roleResult');
-  var roleData = {
-    then: { tag:'Then', color:'var(--ink)', title:'The Sole Source of Information', body:'Students learned mainly by receiving facts directly from the teacher, who held most of the knowledge in the room.' },
-    now: { tag:'Now', color:'var(--accent)', title:'Guide &amp; Facilitator', body:'Teachers now help students analyze information, think critically, and use technology responsibly — guiding rather than dictating.' }
+  /* ---- Slide 5: SCAMPER wheel ---- */
+  var scamperData = {
+    substitute: { letter:'S', title:'Substitute', body:"Replace a material, method, or tool with a different one — e.g. swapping a printed worksheet for an interactive simulation." },
+    combine:    { letter:'C', title:'Combine', body:'Merge two ideas, subjects, or activities into one — e.g. blending art and science into a single project.' },
+    adapt:      { letter:'A', title:'Adapt', body:"Adjust an existing idea to fit a new purpose or context — e.g. adapting a familiar game's rules into a lesson review." },
+    modify:     { letter:'M', title:'Modify', body:'Change the size, shape, or focus of an idea to improve it — e.g. breaking a long lecture into short video clips.' },
+    put:        { letter:'P', title:'Put to Another Use', body:'Apply an existing tool or resource in a new way — e.g. using a messaging app for peer tutoring outside class.' },
+    eliminate:  { letter:'E', title:'Eliminate', body:'Remove unnecessary parts to simplify or sharpen the focus of an activity — e.g. cutting a redundant step from a lab procedure.' },
+    reverse:    { letter:'R', title:'Reverse', body:'Invert the usual order or roles involved — e.g. having students teach the lesson back to the class.' }
   };
-  document.querySelectorAll('#roleToggle [data-role]').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var role = btn.getAttribute('data-role');
-      document.querySelectorAll('#roleToggle [data-role]').forEach(function(b){ b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
-      thumb.classList.toggle('on', role === 'now');
-      var d = roleData[role];
-      roleResult.innerHTML = '<div class="rr-tag" style="color:' + d.color + '">' + d.tag + '</div><div class="rr-title">' + d.title + '</div><p class="rr-body">' + d.body + '</p>';
+  var hubLetter = document.getElementById('hubLetter');
+  var hubHint = document.getElementById('hubHint');
+  var sdTitle = document.getElementById('sdTitle');
+  var sdBody = document.getElementById('sdBody');
+  document.querySelectorAll('.scamper-node').forEach(function(node){
+    node.addEventListener('click', function(){
+      document.querySelectorAll('.scamper-node').forEach(function(n){ n.setAttribute('aria-pressed','false'); });
+      node.setAttribute('aria-pressed','true');
+      var d = scamperData[node.getAttribute('data-key')];
+      hubLetter.textContent = d.letter;
+      hubHint.textContent = d.title;
+      sdTitle.textContent = d.title;
+      sdBody.textContent = d.body;
       fitCurrent();
     });
   });
