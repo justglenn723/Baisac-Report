@@ -289,7 +289,7 @@
 
   <!-- MARQUEE -->
   <div class="marquee">
-    <div class="marquee-track">
+    <div class="marquee-track" id="marqueeTrack">
       <span>Organized &middot; Creative &middot; Reliable &middot; Detail-Oriented &middot; Design-Minded</span>
       <span>Organized &middot; Creative &middot; Reliable &middot; Detail-Oriented &middot; Design-Minded</span>
     </div>
@@ -390,6 +390,42 @@
 <script>
 (function(){
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- marquee: fill track with enough copies so it never gaps, at a constant speed ---- */
+  var marqueeTrack = document.getElementById('marqueeTrack');
+  if (marqueeTrack && !reduceMotion) {
+    var template = marqueeTrack.children[0];
+    var buildTimer = null;
+    function buildMarquee(){
+      marqueeTrack.style.animation = 'none';
+      Array.prototype.slice.call(marqueeTrack.querySelectorAll('span')).forEach(function(s, i){
+        if (i > 0) s.remove();
+      });
+      var target = window.innerWidth * 1.15; // one repeat unit must at least cover the viewport
+      var guard = 0;
+      while (marqueeTrack.scrollWidth / 2 < target && guard < 40) {
+        marqueeTrack.appendChild(template.cloneNode(true));
+        guard++;
+      }
+      if (marqueeTrack.querySelectorAll('span').length % 2 !== 0) {
+        marqueeTrack.appendChild(template.cloneNode(true));
+      }
+      var totalWidth = marqueeTrack.scrollWidth;
+      var speed = 70; // px per second
+      var duration = (totalWidth / 2) / speed;
+      // force reflow so the animation restarts cleanly from 0
+      void marqueeTrack.offsetWidth;
+      marqueeTrack.style.animation = 'marquee ' + duration + 's linear infinite';
+    }
+    buildMarquee();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(buildMarquee);
+    }
+    window.addEventListener('resize', function(){
+      clearTimeout(buildTimer);
+      buildTimer = setTimeout(buildMarquee, 200);
+    });
+  }
 
   /* ---- floating hearts + sparkles ---- */
   var decor = document.getElementById('decor');
